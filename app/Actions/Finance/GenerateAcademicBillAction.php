@@ -1,0 +1,4 @@
+<?php
+namespace App\Actions\Finance;
+use App\Models\{AcademicBill,FeeType,Student,Semester}; use Illuminate\Support\Facades\DB; use Illuminate\Support\Str;
+class GenerateAcademicBillAction { public function execute(Student $student, Semester $semester, FeeType $feeType, ?float $discount=0, ?string $dueDate=null): AcademicBill { return DB::transaction(function()use($student,$semester,$feeType,$discount,$dueDate){$subtotal=(float)$feeType->default_amount;$total=max(0,$subtotal-(float)$discount);return AcademicBill::firstOrCreate(['student_id'=>$student->getKey(),'semester_id'=>$semester->getKey(),'fee_type_id'=>$feeType->getKey()],['tenant_id'=>$student->tenant_id,'bill_number'=>'INV-'.now()->format('Ym').'-'.Str::upper(Str::random(8)),'issued_at'=>now()->toDateString(),'due_date'=>$dueDate??now()->addDays(30)->toDateString(),'subtotal'=>$subtotal,'discount'=>$discount,'penalty'=>0,'total'=>$total,'paid_amount'=>0,'status'=>'unpaid']);}); } }

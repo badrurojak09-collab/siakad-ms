@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        .slide-container { width: 1280px; min-height: 720px; background: #E8F5E9; color: #1B5E20; font-family: Arial, sans-serif; position: relative; overflow: hidden; }
+        .header-area { padding-top: 60px; padding-left: 80px; }
+        .kicker { font-size: 20px; font-weight: 900; color: #FFC107; text-transform: uppercase; letter-spacing: 2px; }
+        .title { font-size: 52px; font-weight: 900; line-height: 1.1; margin-top: 10px; max-width: 900px; }
+        
+        .content-grid { display: flex; gap: 40px; padding-top: 50px; padding-left: 80px; padding-right: 80px; }
+        .stats-column { flex: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .info-column { flex: 1; }
+        
+        .stat-box { background: #1B5E20; color: #E8F5E9; padding-top: 30px; padding-left: 30px; padding-right: 30px; min-height: 180px; box-shadow: 8px 8px 0 #FFC107; }
+        .stat-box.accent { background: #FFC107; color: #1B5E20; box-shadow: 8px 8px 0 #1B5E20; }
+        .stat-value { font-size: 64px; font-weight: 900; line-height: 1; }
+        .stat-label { font-size: 18px; font-weight: 700; text-transform: uppercase; margin-top: 10px; letter-spacing: 1px; }
+        
+        .chart-container { background: #FFFFFF; padding-top: 20px; padding-left: 20px; padding-right: 20px; box-shadow: 8px 8px 0 #1B5E20; min-height: 390px; }
+        .chart-title { font-size: 16px; font-weight: 900; text-transform: uppercase; margin-bottom: 15px; color: #1B5E20; }
+        
+        .status-badge { display: inline-block; background: #1B5E20; color: #FFC107; padding-top: 8px; padding-left: 15px; padding-right: 15px; font-weight: 900; font-size: 14px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header-area">
+            <div class="kicker">06 / Validasi Teknis</div>
+            <h1 class="title">Hasil validasi Fase A menunjukkan fondasi dapat dijalankan</h1>
+        </div>
+        
+        <div class="content-grid">
+            <div class="stats-column">
+                <div class="stat-box">
+                    <div class="stat-value">296</div>
+                    <div class="stat-label">File PHP Lulus Lint</div>
+                </div>
+                <div class="stat-box accent">
+                    <div class="stat-value">140</div>
+                    <div class="stat-label">Route Admin Filament</div>
+                </div>
+                <div class="stat-box accent">
+                    <div class="stat-value">5/7</div>
+                    <div class="stat-label">Test & Assertion Lulus</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">100%</div>
+                    <div class="stat-label">Migration Smoke Test</div>
+                </div>
+            </div>
+            
+            <div class="info-column">
+                <div class="chart-container">
+                    <div class="chart-title">Cakupan Validasi Kode</div>
+                    <div style="height: 300px;">
+                        <canvas id="validationChart"></canvas>
+                    </div>
+                    <div class="status-badge">STATUS: STABLE BASELINE</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('validationChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Lint', 'Routes', 'Tests', 'Migrate'],
+                datasets: [{
+                    label: 'Persentase Keberhasilan',
+                    data: [100, 100, 100, 100],
+                    backgroundColor: ['#1B5E20', '#FFC107', '#1B5E20', '#FFC107'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { color: '#1B5E20', font: { weight: 'bold' } }
+                    },
+                    x: {
+                        ticks: { color: '#1B5E20', font: { weight: 'bold' } }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

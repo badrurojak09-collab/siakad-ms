@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        .slide-container {
+            width: 1280px;
+            min-height: 720px;
+            background: #E8F5E9;
+            color: #1B5E20;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        .header-section {
+            padding-top: 60px;
+            padding-left: 80px;
+            width: 100%;
+        }
+        .kicker {
+            font-size: 20px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: #FFC107;
+            margin-bottom: 10px;
+        }
+        .title {
+            font-size: 56px;
+            font-weight: 900;
+            line-height: 1.1;
+            max-width: 900px;
+            letter-spacing: -2px;
+        }
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+            padding-top: 50px;
+            padding-left: 80px;
+            padding-right: 80px;
+        }
+        .box {
+            padding-top: 30px;
+            padding-left: 30px;
+            padding-right: 30px;
+            min-height: 340px;
+            box-shadow: 8px 8px 0px #1B5E20;
+        }
+        .box-green {
+            background: #1B5E20;
+            color: #E8F5E9;
+        }
+        .box-yellow {
+            background: #FFC107;
+            color: #1B5E20;
+            box-shadow: 8px 8px 0px #1B5E20;
+        }
+        .box-title {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+        .list-item {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 18px;
+            line-height: 1.4;
+            display: flex;
+            align-items: flex-start;
+        }
+        .list-item span {
+            margin-right: 15px;
+            font-weight: 900;
+        }
+        .footer {
+            position: absolute;
+            bottom: 40px;
+            left: 80px;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header-section">
+            <div class="kicker">04 / Database Integrity</div>
+            <h1 class="title">Fase A memperkuat integritas database dan lifecycle tenant</h1>
+        </div>
+
+        <div class="content-grid">
+            <div class="box box-green">
+                <h2 class="box-title">Skema &amp; Relasi</h2>
+                <div class="list-item"><span>•</span> Penambahan Foreign Key pada 40+ tabel domain akademik.</div>
+                <div class="list-item"><span>•</span> Unique Constraint untuk NIM, NIDN, dan Kode Mata Kuliah per Tenant.</div>
+                <div class="list-item"><span>•</span> Indexing strategis untuk performa query dan deteksi konflik jadwal.</div>
+                <div class="list-item"><span>•</span> Normalisasi ID dan tipe data yang sepenuhnya MySQL-ready.</div>
+            </div>
+
+            <div class="box box-yellow">
+                <h2 class="box-title">Lifecycle Tenant</h2>
+                <div class="list-item"><span>•</span> Status: Trial, Active, Suspended, Inactive.</div>
+                <div class="list-item"><span>•</span> Transition Service memvalidasi alur perubahan status institusi.</div>
+                <div class="list-item"><span>•</span> Audit Trail mencatat setiap perpindahan dan alasan perubahan.</div>
+                <div class="list-item"><span>•</span> Tenant Switcher Action dengan validasi membership aktif.</div>
+            </div>
+        </div>
+
+        <div class="footer">SIAKAD FASE A · DATABASE HARDENING · AUDIT TRAIL</div>
+    </div>
+</body>
+</html>

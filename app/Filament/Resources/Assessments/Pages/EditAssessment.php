@@ -1,0 +1,5 @@
+<?php
+namespace App\Filament\Resources\Assessments\Pages;
+use App\Filament\Resources\Assessments\AssessmentResource;
+use Filament\Resources\Pages\EditRecord;
+class EditAssessment extends EditRecord { protected static string $resource = AssessmentResource::class; }

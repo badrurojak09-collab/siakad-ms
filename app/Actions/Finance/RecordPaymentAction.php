@@ -1,0 +1,6 @@
+<?php
+namespace App\Actions\Finance;
+use App\Models\AcademicBill;
+use App\Models\Payment;
+use Illuminate\Support\Facades\DB; use Illuminate\Validation\ValidationException; use Illuminate\Support\Str;
+class RecordPaymentAction { public function execute(AcademicBill $bill,float $amount,string $method,?string $reference=null): Payment { return DB::transaction(function()use($bill,$amount,$method,$reference){$outstanding=$bill->outstanding_amount;if($amount<=0||$amount>$outstanding)throw ValidationException::withMessages(['amount'=>'Nominal pembayaran melebihi sisa tagihan atau tidak valid.']);$payment=$bill->payments()->create(['tenant_id'=>$bill->tenant_id,'student_id'=>$bill->student_id,'payment_number'=>'PAY-'.now()->format('Ymd').'-'.Str::upper(Str::random(8)),'amount'=>$amount,'method'=>$method,'status'=>'confirmed','reference'=>$reference,'paid_at'=>now(),'received_by'=>auth()->id()]);$paid=(float)$bill->payments()->where('status','confirmed')->sum('amount');$bill->update(['paid_amount'=>$paid,'status'=>$paid >= (float)$bill->total?'paid':'partial']);activity('finance')->performedOn($bill)->withProperties(['payment_id'=>$payment->id,'amount'=>$amount])->log('payment.confirmed');return $payment;}); } }

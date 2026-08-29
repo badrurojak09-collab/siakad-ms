@@ -1,0 +1,111 @@
+{
+  "project_info": {
+    "title": "Arsitektur & Hasil Implementasi Fase A",
+    "created": 1787677738.421,
+    "last_updated": 1787677939.114,
+    "total_slides": 9
+  },
+  "slides": [
+    {
+      "id": "cover",
+      "state": "edited",
+      "pageNum": 1
+    },
+    {
+      "id": "architecture",
+      "state": "edited",
+      "pageNum": 2
+    },
+    {
+      "id": "domains",
+      "state": "edited",
+      "pageNum": 3
+    },
+    {
+      "id": "tenant",
+      "state": "edited",
+      "pageNum": 4
+    },
+    {
+      "id": "integrity",
+      "state": "edited",
+      "pageNum": 5
+    },
+    {
+      "id": "rbac",
+      "state": "edited",
+      "pageNum": 6
+    },
+    {
+      "id": "validation",
+      "state": "edited",
+      "pageNum": 7
+    },
+    {
+      "id": "phase_b",
+      "state": "edited",
+      "pageNum": 8
+    },
+    {
+      "id": "principles",
+      "state": "edited",
+      "pageNum": 9
+    }
+  ],
+  "outline": [
+    {
+      "id": "cover",
+      "title": "Arsitektur & Hasil Implementasi Fase A",
+      "summary": "SIAKAD Perguruan Tinggi — Laravel 13, Filament 5, MySQL.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "architecture",
+      "title": "SIAKAD dibangun sebagai modular monolith yang siap berkembang",
+      "summary": "Laravel 13 sebagai application core dan REST API, Filament 5 sebagai back-office, MySQL sebagai database utama, dan Redis untuk queue/cache.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "domains",
+      "title": "Enam belas domain membentuk satu alur akademik end-to-end",
+      "summary": "Memetakan fondasi, domain akademik, operasional, dan outcome SIAKAD.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "tenant",
+      "title": "Tenant isolation menjadi fondasi keamanan data institusi",
+      "summary": "Menjelaskan tenant_id, TenantContext, resolver, membership, dan fail-closed query.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "integrity",
+      "title": "Fase A memperkuat integritas database dan lifecycle tenant",
+      "summary": "Foreign key, index, unique rule, lifecycle tenant, switch, dan audit trail.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "rbac",
+      "title": "RBAC memisahkan kewenangan operasional utama",
+      "summary": "Role awal, permission domain, policy objek, dan Filament sebagai kanal administrasi.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "validation",
+      "title": "Hasil validasi Fase A menunjukkan fondasi dapat dijalankan",
+      "summary": "Migration/seeding smoke test, 5 feature test, 296 file PHP lint, dan 140 route admin.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "phase_b",
+      "title": "Fase B berfokus pada alur akademik yang menghasilkan data resmi",
+      "summary": "Master data, KRS, pembayaran SPP, dan target validasi berikutnya.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "principles",
+      "title": "Prinsip implementasi berikutnya: rule di service, bukan hanya di form",
+      "summary": "Service/action, reuse lintas kanal, konfigurasi kebijakan, dan urutan menuju production readiness.",
+      "image_plan": "Use a suitable image if needed"
+    }
+  ]
+}

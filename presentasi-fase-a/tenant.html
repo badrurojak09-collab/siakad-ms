@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    .slide-container { width: 1280px; min-height: 720px; background: #E8F5E9; color: #1B5E20; font-family: Arial, sans-serif; position: relative; overflow: hidden; }
+    .header-section { padding-top: 60px; padding-left: 80px; }
+    .kicker { font-size: 18px; font-weight: 900; color: #FFC107; text-transform: uppercase; letter-spacing: 2px; }
+    .title { font-size: 48px; font-weight: 900; margin-top: 10px; line-height: 1.1; max-width: 900px; }
+    .content-grid { display: flex; gap: 40px; padding-top: 50px; padding-left: 80px; padding-right: 80px; }
+    .main-text { width: 60%; }
+    .tech-box { width: 40%; background: #1B5E20; color: #E8F5E9; padding-top: 30px; padding-left: 30px; padding-right: 30px; min-height: 400px; box-shadow: 8px 8px 0 #FFC107; }
+    .tech-box h3 { font-size: 24px; font-weight: 900; color: #FFC107; margin-bottom: 20px; text-transform: uppercase; }
+    .tech-item { margin-top: 20px; }
+    .tech-item strong { display: block; font-size: 18px; margin-bottom: 5px; }
+    .tech-item p { font-size: 16px; line-height: 1.4; opacity: 0.9; }
+    .concept-card { background: #FFC107; color: #1B5E20; padding-top: 30px; padding-left: 30px; padding-right: 30px; margin-top: 20px; box-shadow: 8px 8px 0 #1B5E20; min-height: 200px; }
+    .concept-card h4 { font-size: 22px; font-weight: 900; margin-bottom: 15px; }
+    .concept-card p { font-size: 18px; line-height: 1.5; font-weight: 500; }
+    .footer-note { position: absolute; bottom: 40px; left: 80px; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header-section">
+            <div class="kicker">03 / Keamanan Data</div>
+            <h1 class="title">Tenant isolation menjadi fondasi keamanan data institusi</h1>
+        </div>
+        
+        <div class="content-grid">
+            <div class="main-text">
+                <div class="concept-card">
+                    <h4>Mekanisme Fail-Closed</h4>
+                    <p>Query database secara otomatis dibatasi pada level model. Jika konteks tenant tidak ditemukan, sistem menolak memberikan data untuk mencegah kebocoran antar-institusi.</p>
+                </div>
+                <div style="margin-top: 40px;">
+                    <p style="font-size: 20px; line-height: 1.6; font-weight: 500;">
+                        Isolasi dilakukan pada lapisan aplikasi dan database menggunakan <strong>Global Scopes</strong>, memastikan setiap institusi hanya dapat mengakses data miliknya sendiri secara transparan.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="tech-box">
+                <h3>Komponen Inti</h3>
+                <div class="tech-item">
+                    <strong>TenantContext (Singleton)</strong>
+                    <p>Pusat kendali identitas institusi yang aktif dalam satu siklus request.</p>
+                </div>
+                <div class="tech-item">
+                    <strong>Middleware Resolver</strong>
+                    <p>Mendeteksi institusi dari Header, Session, atau Route secara otomatis.</p>
+                </div>
+                <div class="tech-item">
+                    <strong>Membership Validation</strong>
+                    <p>Memastikan pengguna memiliki hak akses aktif pada institusi terkait.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            Implementasi: Laravel Middleware + Eloquent Global Scopes
+        </div>
+    </div>
+</body>
+</html>

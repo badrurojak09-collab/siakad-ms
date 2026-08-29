@@ -1,0 +1,4 @@
+<?php
+namespace App\Models;
+use App\Models\Concerns\BelongsToTenant; use Illuminate\Database\Eloquent\Model; use Illuminate\Database\Eloquent\SoftDeletes;
+class Thesis extends Model { use SoftDeletes,BelongsToTenant; protected $guarded=[]; protected $casts=['proposed_date'=>'date','defense_date'=>'datetime','metadata'=>'array']; public function student(){return $this->belongsTo(Student::class);} public function supervisor1(){return $this->belongsTo(Lecturer::class,'supervisor_1_id');} public function supervisor2(){return $this->belongsTo(Lecturer::class,'supervisor_2_id');} public function supervisions(){return $this->hasMany(Supervision::class);} public function thesisGrades(){return $this->hasMany(ThesisGrade::class);} public function examiners(){return $this->hasMany(ThesisExaminer::class);} public function revisions(){return $this->hasMany(ThesisRevision::class);} }

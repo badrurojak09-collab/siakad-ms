@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    .slide-container { width: 1280px; min-height: 720px; background: #E8F5E9; color: #1B5E20; font-family: Arial, sans-serif; position: relative; overflow: hidden; }
+    .header-section { padding-top: 60px; padding-left: 80px; }
+    .kicker { font-size: 18px; font-weight: 900; color: #FFC107; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+    .title { font-size: 56px; font-weight: 900; line-height: 1.1; letter-spacing: -2px; max-width: 900px; }
+    .content-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; padding-top: 50px; padding-left: 80px; padding-right: 80px; }
+    .card { padding-top: 30px; padding-left: 25px; padding-right: 25px; min-height: 380px; box-shadow: 8px 8px 0px #1B5E20; }
+    .card-green { background: #1B5E20; color: #E8F5E9; }
+    .card-yellow { background: #FFC107; color: #1B5E20; box-shadow: 8px 8px 0px #1B5E20; }
+    .card-white { background: #FFFFFF; color: #1B5E20; border: 4px solid #1B5E20; }
+    .card-title { font-size: 24px; font-weight: 900; text-transform: uppercase; margin-bottom: 25px; border-bottom: 4px solid currentColor; padding-bottom: 10px; display: inline-block; }
+    .list-item { font-size: 19px; font-weight: 500; margin-top: 15px; line-height: 1.4; }
+    .footer { position: absolute; bottom: 40px; left: 80px; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header-section">
+            <div class="kicker">05 / Otorisasi</div>
+            <h1 class="title">RBAC memisahkan kewenangan operasional utama</h1>
+        </div>
+        
+        <div class="content-grid">
+            <div class="card card-green">
+                <div class="card-title">Role Utama</div>
+                <div class="list-item">Platform Superadmin</div>
+                <div class="list-item">Admin Institusi</div>
+                <div class="list-item">Operator Akademik</div>
+                <div class="list-item">Dosen & Dosen Wali</div>
+                <div class="list-item">Mahasiswa</div>
+                <div class="list-item">Bagian Keuangan</div>
+            </div>
+            
+            <div class="card card-yellow">
+                <div class="card-title">Domain Izin</div>
+                <div class="list-item">Manajemen Tenant</div>
+                <div class="list-item">Master Data Akademik</div>
+                <div class="list-item">Workflow KRS & Nilai</div>
+                <div class="list-item">Presensi & Jadwal</div>
+                <div class="list-item">Tagihan & Pembayaran</div>
+                <div class="list-item">Pelaporan & PDDikti</div>
+            </div>
+            
+            <div class="card card-white">
+                <div class="card-title">Mekanisme</div>
+                <div class="list-item"><strong>Spatie Permission:</strong> Mengelola peran dan izin secara dinamis.</div>
+                <div class="list-item"><strong>Laravel Policy:</strong> Otorisasi ketat pada level objek data.</div>
+                <div class="list-item"><strong>Filament Shield:</strong> Integrasi otomatis dengan UI administrasi.</div>
+            </div>
+        </div>
+        
+        <div class="footer">KEAMANAN BERLAPIS: ROLE-BASED ACCESS CONTROL + OBJECT-LEVEL POLICY</div>
+    </div>
+</body>
+</html>

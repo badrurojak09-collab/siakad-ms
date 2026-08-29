@@ -1,0 +1,4 @@
+<?php
+namespace App\Actions\Teaching;
+use App\Models\CourseClass; use App\Models\Lecturer; use App\Models\TeachingAssignment; use Illuminate\Validation\ValidationException;
+class AssignLecturerAction { public function execute(CourseClass $class,Lecturer $lecturer,string $role='primary'): TeachingAssignment { if($class->status==='closed') throw ValidationException::withMessages(['class'=>'Kelas sudah ditutup.']); if(TeachingAssignment::where('course_class_id',$class->id)->where('role','primary')->where('status','active')->exists()&&$role==='primary') throw ValidationException::withMessages(['lecturer'=>'Kelas sudah memiliki dosen utama.']); return TeachingAssignment::create(['tenant_id'=>$class->tenant_id,'course_class_id'=>$class->id,'lecturer_id'=>$lecturer->id,'role'=>$role,'status'=>'active']); } }

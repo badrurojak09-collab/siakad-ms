@@ -1,0 +1,4 @@
+<?php
+namespace App\Actions\Admissions;
+use App\Models\Applicant; use Illuminate\Validation\ValidationException;
+class SubmitApplicantAction { public function execute(Applicant $applicant): Applicant { if($applicant->status!=='draft') throw ValidationException::withMessages(['status'=>'Pendaftaran tidak berada pada status draft.']); if(now()->lt($applicant->period->registration_start)||now()->gt($applicant->period->registration_end)) throw ValidationException::withMessages(['period'=>'Periode pendaftaran tidak aktif.']); if($applicant->selections()->count()<1) throw ValidationException::withMessages(['selection'=>'Pilih minimal satu program studi.']); $applicant->update(['status'=>'submitted','submitted_at'=>now()]); activity('pmb')->performedOn($applicant)->log('applicant.submitted'); return $applicant->refresh(); } }

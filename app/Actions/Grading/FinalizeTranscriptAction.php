@@ -1,0 +1,4 @@
+<?php
+namespace App\Actions\Grading;
+use App\Models\{AcademicTranscript,StudentGrade}; use Illuminate\Validation\ValidationException;
+class FinalizeTranscriptAction { public function execute(AcademicTranscript $transcript,int $actorId): AcademicTranscript { if($transcript->status!=='generated') throw ValidationException::withMessages(['status'=>'Transkrip harus berstatus generated.']); $gradeIds=$transcript->items()->pluck('student_grade_id'); if(StudentGrade::whereIn('id',$gradeIds)->where('grade_status','!=','published')->exists()) throw ValidationException::withMessages(['grades'=>'Semua nilai harus published sebelum transkrip difinalisasi.']); $transcript->update(['status'=>'final','finalized_at'=>now(),'finalized_by'=>$actorId]); activity('academic')->causedBy($actorId)->performedOn($transcript)->log('transcript.finalized'); return $transcript->refresh(); } }

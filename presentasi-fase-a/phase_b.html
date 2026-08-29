@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    .slide-container { width: 1280px; min-height: 720px; background: #E8F5E9; color: #1B5E20; font-family: Arial, sans-serif; position: relative; overflow: hidden; }
+    .header-area { padding-top: 60px; padding-left: 80px; }
+    .kicker { font-size: 20px; font-weight: 800; color: #FFC107; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+    .title { font-size: 48px; font-weight: 900; line-height: 1.1; max-width: 900px; }
+    .content-grid { display: flex; gap: 30px; padding-top: 50px; padding-left: 80px; padding-right: 80px; }
+    .card { padding-top: 30px; padding-left: 25px; padding-right: 25px; min-height: 350px; box-shadow: 8px 8px 0px #1B5E20; }
+    .card-green { background: #1B5E20; color: #E8F5E9; flex: 1; }
+    .card-yellow { background: #FFC107; color: #1B5E20; flex: 1.2; box-shadow: 8px 8px 0px #1B5E20; }
+    .card-white { background: #FFFFFF; color: #1B5E20; flex: 1; border: 4px solid #1B5E20; }
+    .card-title { font-size: 28px; font-weight: 900; margin-bottom: 20px; text-transform: uppercase; }
+    .item { font-size: 20px; font-weight: 500; margin-top: 15px; line-height: 1.4; }
+    .item-bold { font-weight: 800; }
+    .footer { position: absolute; bottom: 40px; left: 80px; font-size: 18px; font-weight: 700; color: #1B5E20; opacity: 0.8; }
+</style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header-area">
+            <div class="kicker">Fase Berikutnya</div>
+            <h1 class="title">Fase B: Alur Akademik & Data Resmi</h1>
+        </div>
+        
+        <div class="content-grid">
+            <div class="card card-green">
+                <h2 class="card-title">Master Data</h2>
+                <div class="item">Struktur Organisasi & Prodi</div>
+                <div class="item">Kurikulum & Pemetaan MK</div>
+                <div class="item">Manajemen Dosen & Mahasiswa</div>
+                <div class="item">Periode Akademik Aktif</div>
+            </div>
+            
+            <div class="card card-yellow">
+                <h2 class="card-title">KRS Workflow</h2>
+                <div class="item item-bold">Validasi Eligibility & IPK</div>
+                <div class="item">Pengecekan Prasyarat MK</div>
+                <div class="item">Deteksi Konflik Jadwal</div>
+                <div class="item">Approval Dosen Wali</div>
+            </div>
+            
+            <div class="card card-white">
+                <h2 class="card-title">Keuangan</h2>
+                <div class="item">Tagihan SPP & Biaya Kuliah</div>
+                <div class="item">Pencatatan Pembayaran</div>
+                <div class="item">Status Lunas/Tunggakan</div>
+                <div class="item">Audit Transaksi Keuangan</div>
+            </div>
+        </div>
+
+        <div class="footer">TARGET: VALIDASI DOMAIN & MYSQL STAGING READY</div>
+    </div>
+</body>
+</html>

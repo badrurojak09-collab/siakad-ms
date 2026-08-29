@@ -1,0 +1,2 @@
+<?php
+namespace App\Filament\Resources\LeaveRequests\Pages; use App\Filament\Resources\LeaveRequests\LeaveRequestResource; use Filament\Resources\Pages\EditRecord; class EditLeaveRequest extends EditRecord { protected static string $resource=\App\Filament\Resources\LeaveRequests\LeaveRequestResource::class; }
