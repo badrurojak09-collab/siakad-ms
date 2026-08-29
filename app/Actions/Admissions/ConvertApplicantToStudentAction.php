@@ -1,4 +1,24 @@
 <?php
 namespace App\Actions\Admissions;
-use App\Models\{Applicant,Student}; use Illuminate\Support\Facades\DB; use Illuminate\Validation\ValidationException;
-class ConvertApplicantToStudentAction { public function execute(Applicant $applicant,string $nim,int $studyProgramId,?int $actorId=null): Student { if($applicant->status!=='selection_passed') throw ValidationException::withMessages(['status'=>'Pendaftar belum dinyatakan lulus seleksi.']); if($applicant->bills()->where('status','!=','paid')->exists()) throw ValidationException::withMessages(['payment'=>'Tagihan PMB belum lunas.']); return DB::transaction(function()use($applicant,$nim,$studyProgramId,$actorId){$student=Student::create(['tenant_id'=>$applicant->tenant_id,'study_program_id'=>$studyProgramId,'nim'=>$nim,'entry_year'=>now()->year,'admission_type'=>'regular','status'=>'active','metadata'=>['applicant_id'=>$applicant->id,'email'=>$applicant->email]]);$applicant->update(['status'=>'enrolled','student_id'=>$student->id,'converted_at'=>now()]);if($actorId) activity('pmb')->causedBy($actorId)->performedOn($student)->log('applicant.converted');return $student;}); } }
+
+use App\Models\{Applicant, Student};
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
+
+class ConvertApplicantToStudentAction
+{
+    public function execute(Applicant $applicant, string $nim, int $studyProgramId, ?int $actorId = null): Student
+    {
+        if ($applicant->status !== 'selection_passed')
+            throw ValidationException::withMessages(['status' => 'Pendaftar belum dinyatakan lulus seleksi.']);
+        if ($applicant->bills()->where('status', '!=', 'paid')->exists())
+            throw ValidationException::withMessages(['payment' => 'Tagihan PMB belum lunas.']);
+        return DB::transaction(function () use ($applicant, $nim, $studyProgramId, $actorId) {
+            $student = Student::create(['tenant_id' => $applicant->tenant_id, 'study_program_id' => $studyProgramId, 'nim' => $nim, 'entry_year' => now()->year, 'admission_type' => 'regular', 'status' => 'active', 'metadata' => ['applicant_id' => $applicant->id, 'email' => $applicant->email]]);
+            $applicant->update(['status' => 'enrolled', 'student_id' => $student->id, 'converted_at' => now()]);
+            if ($actorId)
+                activity('pmb')->causedBy($actorId)->performedOn($student)->log('applicant.converted');
+            return $student;
+        });
+    }
+}

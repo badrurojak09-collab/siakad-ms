@@ -17,7 +17,9 @@ class VerifyAdmissionDocumentAction
             'verified_by' => $actorId,
             'verified_at' => now(),
         ]);
-        activity('pmb')->causedBy($actorId)->performedOn($document)
+        activity('pmb')
+            ->causedBy($actorId)
+            ->performedOn($document)
             ->withProperties(['reason' => $reason])
             ->log($approved ? 'document.verified' : 'document.rejected');
         return $document->refresh();
