@@ -1,5 +1,39 @@
 <?php
 namespace App\Filament\Resources\CurriculumCourses;
-use App\Models\CurriculumCourse; use App\Filament\Resources\CurriculumCourses\Pages;
-use Filament\Forms\Components\{Select, TextInput}; use Filament\Resources\Resource; use Filament\Schemas\Schema; use Filament\Support\Icons\Heroicon; use Filament\Tables\{Actions\DeleteAction,Actions\EditAction,Columns\TextColumn,Table}; use BackedEnum; use UnitEnum;
-class CurriculumCourseResource extends Resource { protected static ?string $slug = 'curriculum-courses'; protected static ?string $model=CurriculumCourse::class; protected static string|BackedEnum|null $navigationIcon=Heroicon::OutlinedListBullet; protected static string|UnitEnum|null $navigationGroup='Kurikulum & Mata Kuliah'; protected static ?string $navigationLabel='Mata Kuliah dalam Kurikulum'; protected static ?string $modelLabel='Mata Kuliah dalam Kurikulum'; protected static ?string $pluralModelLabel='Mata Kuliah dalam Kurikulum'; public static function form(Schema $schema):Schema{return $schema->components([Select::make('curriculum_id')->label('Kurikulum')->relationship('curriculum','name')->searchable()->preload()->required(),Select::make('course_id')->label('Mata Kuliah')->relationship('course','name')->searchable()->preload()->required(),TextInput::make('semester')->label('Semester')->numeric()->minValue(1)->maxValue(14)->required(),Select::make('is_mandatory')->label('Sifat Mata Kuliah')->options([1=>'Wajib',0=>'Pilihan'])->default(1)->required(),TextInput::make('concentration')->label('Konsentrasi')->maxLength(100)]);} public static function table(Table $table):Table{return $table->columns([TextColumn::make('curriculum.name')->label('Kurikulum')->searchable(),TextColumn::make('course.code')->label('Kode')->searchable(),TextColumn::make('course.name')->label('Mata Kuliah')->searchable(),TextColumn::make('semester')->label('Semester')->sortable(),TextColumn::make('is_mandatory')->label('Sifat')->formatStateUsing(fn($state)=>$state?'Wajib':'Pilihan')->badge(),TextColumn::make('concentration')->label('Konsentrasi')])->actions([EditAction::make()->label('Ubah'),DeleteAction::make()->label('Hapus')->requiresConfirmation()])->defaultSort('semester');} public static function getPages():array{return ['index'=>Pages\ListCurriculumCourses::route('/'),'create'=>Pages\CreateCurriculumCourse::route('/create'),'edit'=>Pages\EditCurriculumCourse::route('/{record}/edit')];}}
+
+use App\Filament\Resources\CurriculumCourses\Pages;
+use App\Models\CurriculumCourse;
+use Filament\Forms\Components\{Select, TextInput};
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\{Columns\TextColumn, Table};
+use Filament\{Actions\DeleteAction, Actions\EditAction};
+use BackedEnum;
+use UnitEnum;
+
+class CurriculumCourseResource extends Resource
+{
+    protected static ?string $slug = 'curriculum-courses';
+    protected static ?string $model = CurriculumCourse::class;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedListBullet;
+    protected static string|UnitEnum|null $navigationGroup = 'Kurikulum & Mata Kuliah';
+    protected static ?string $navigationLabel = 'Mata Kuliah dalam Kurikulum';
+    protected static ?string $modelLabel = 'Mata Kuliah dalam Kurikulum';
+    protected static ?string $pluralModelLabel = 'Mata Kuliah dalam Kurikulum';
+
+    public static function form(Schema $schema): Schema
+    {
+        return $schema->components([Select::make('curriculum_id')->label('Kurikulum')->relationship('curriculum', 'name')->searchable()->preload()->required(), Select::make('course_id')->label('Mata Kuliah')->relationship('course', 'name')->searchable()->preload()->required(), TextInput::make('semester')->label('Semester')->numeric()->minValue(1)->maxValue(14)->required(), Select::make('is_mandatory')->label('Sifat Mata Kuliah')->options([1 => 'Wajib', 0 => 'Pilihan'])->default(1)->required(), TextInput::make('concentration')->label('Konsentrasi')->maxLength(100)]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table->columns([TextColumn::make('curriculum.name')->label('Kurikulum')->searchable(), TextColumn::make('course.code')->label('Kode')->searchable(), TextColumn::make('course.name')->label('Mata Kuliah')->searchable(), TextColumn::make('semester')->label('Semester')->sortable(), TextColumn::make('is_mandatory')->label('Sifat')->formatStateUsing(fn($state) => $state ? 'Wajib' : 'Pilihan')->badge(), TextColumn::make('concentration')->label('Konsentrasi')])->actions([EditAction::make()->label('Ubah'), DeleteAction::make()->label('Hapus')->requiresConfirmation()])->defaultSort('semester');
+    }
+
+    public static function getPages(): array
+    {
+        return ['index' => Pages\ListCurriculumCourses::route('/'), 'create' => Pages\CreateCurriculumCourse::route('/create'), 'edit' => Pages\EditCurriculumCourse::route('/{record}/edit')];
+    }
+}

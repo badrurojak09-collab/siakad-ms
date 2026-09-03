@@ -1,4 +1,39 @@
 <?php
 namespace App\Filament\Resources\StudentGrades;
-use App\Models\StudentGrade; use App\Filament\Resources\StudentGrades\Pages; use Filament\Forms\Components\{Select,TextInput}; use Filament\Resources\Resource; use Filament\Schemas\Schema; use Filament\Support\Icons\Heroicon; use Filament\Tables\{Actions\DeleteAction,Actions\EditAction,Columns\TextColumn,Table}; use BackedEnum; use UnitEnum;
-class StudentGradeResource extends Resource { protected static ?string $slug='student-grades'; protected static ?string $model=StudentGrade::class; protected static string|BackedEnum|null $navigationIcon=Heroicon::OutlinedAcademicCap; protected static string|UnitEnum|null $navigationGroup='Penilaian'; protected static ?string $navigationLabel='Nilai Mahasiswa'; protected static ?string $modelLabel='Nilai Mahasiswa'; protected static ?string $pluralModelLabel='Nilai Mahasiswa'; public static function form(Schema $schema):Schema{return $schema->components([Select::make('course_class_id')->label('Kelas')->relationship('courseClass','class_code')->searchable()->preload()->required(),Select::make('student_id')->label('Mahasiswa')->relationship('student','nim')->searchable()->preload()->required(),Select::make('assessment_id')->label('Komponen')->relationship('assessment','name')->searchable()->preload()->required(),TextInput::make('score')->label('Nilai')->numeric()->minValue(0)->maxValue(100),TextInput::make('letter_grade')->label('Nilai Huruf')->maxLength(5),Select::make('graded_by')->label('Dinilai Oleh')->relationship('gradedBy','name')->searchable()->preload()->nullable()]);} public static function table(Table $table):Table{return $table->columns([TextColumn::make('courseClass.class_code')->label('Kelas'),TextColumn::make('student.nim')->label('NIM'),TextColumn::make('student.user.name')->label('Mahasiswa'),TextColumn::make('assessment.name')->label('Komponen'),TextColumn::make('score')->label('Nilai'),TextColumn::make('letter_grade')->label('Nilai Huruf')])->actions([EditAction::make()->label('Ubah'),DeleteAction::make()->label('Hapus')->requiresConfirmation()]);} public static function getPages():array{return ['index'=>Pages\ListStudentGrades::route('/'),'create'=>Pages\CreateStudentGrade::route('/create'),'edit'=>Pages\EditStudentGrade::route('/{record}/edit')];}}
+
+use App\Filament\Resources\StudentGrades\Pages;
+use App\Models\StudentGrade;
+use Filament\Forms\Components\{Select, TextInput};
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\{Columns\TextColumn, Table};
+use Filament\{Actions\DeleteAction, Actions\EditAction};
+use BackedEnum;
+use UnitEnum;
+
+class StudentGradeResource extends Resource
+{
+    protected static ?string $slug = 'student-grades';
+    protected static ?string $model = StudentGrade::class;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
+    protected static string|UnitEnum|null $navigationGroup = 'Penilaian';
+    protected static ?string $navigationLabel = 'Nilai Mahasiswa';
+    protected static ?string $modelLabel = 'Nilai Mahasiswa';
+    protected static ?string $pluralModelLabel = 'Nilai Mahasiswa';
+
+    public static function form(Schema $schema): Schema
+    {
+        return $schema->components([Select::make('course_class_id')->label('Kelas')->relationship('courseClass', 'class_code')->searchable()->preload()->required(), Select::make('student_id')->label('Mahasiswa')->relationship('student', 'nim')->searchable()->preload()->required(), Select::make('assessment_id')->label('Komponen')->relationship('assessment', 'name')->searchable()->preload()->required(), TextInput::make('score')->label('Nilai')->numeric()->minValue(0)->maxValue(100), TextInput::make('letter_grade')->label('Nilai Huruf')->maxLength(5), Select::make('graded_by')->label('Dinilai Oleh')->relationship('gradedBy', 'name')->searchable()->preload()->nullable()]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table->columns([TextColumn::make('courseClass.class_code')->label('Kelas'), TextColumn::make('student.nim')->label('NIM'), TextColumn::make('student.user.name')->label('Mahasiswa'), TextColumn::make('assessment.name')->label('Komponen'), TextColumn::make('score')->label('Nilai'), TextColumn::make('letter_grade')->label('Nilai Huruf')])->actions([EditAction::make()->label('Ubah'), DeleteAction::make()->label('Hapus')->requiresConfirmation()]);
+    }
+
+    public static function getPages(): array
+    {
+        return ['index' => Pages\ListStudentGrades::route('/'), 'create' => Pages\CreateStudentGrade::route('/create'), 'edit' => Pages\EditStudentGrade::route('/{record}/edit')];
+    }
+}

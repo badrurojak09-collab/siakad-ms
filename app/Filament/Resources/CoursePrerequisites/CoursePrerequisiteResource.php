@@ -1,13 +1,14 @@
 <?php
 namespace App\Filament\Resources\CoursePrerequisites;
 
-use App\Models\CoursePrerequisite;
 use App\Filament\Resources\CoursePrerequisites\Pages;
+use App\Models\CoursePrerequisite;
 use Filament\Forms\Components\Select;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\{Actions\DeleteAction, Actions\EditAction, Columns\IconColumn, Columns\TextColumn, Table};
+use Filament\Tables\{Columns\IconColumn, Columns\TextColumn, Table};
+use Filament\{Actions\DeleteAction, Actions\EditAction};
 use BackedEnum;
 use UnitEnum;
 
@@ -28,11 +29,20 @@ class CoursePrerequisiteResource extends Resource
             Select::make('is_mandatory')->label('Sifat Prasyarat')->options([1 => 'Wajib', 0 => 'Opsional'])->default(1)->required(),
         ]);
     }
+
     public static function table(Table $table): Table
     {
         return $table->columns([
-            TextColumn::make('course.code')->label('Kode Mata Kuliah')->searchable(), TextColumn::make('course.name')->label('Mata Kuliah')->searchable(), TextColumn::make('prerequisiteCourse.code')->label('Kode Prasyarat')->searchable(), TextColumn::make('prerequisiteCourse.name')->label('Mata Kuliah Prasyarat')->searchable(), IconColumn::make('is_mandatory')->label('Wajib')->boolean(),
+            TextColumn::make('course.code')->label('Kode Mata Kuliah')->searchable(),
+            TextColumn::make('course.name')->label('Mata Kuliah')->searchable(),
+            TextColumn::make('prerequisiteCourse.code')->label('Kode Prasyarat')->searchable(),
+            TextColumn::make('prerequisiteCourse.name')->label('Mata Kuliah Prasyarat')->searchable(),
+            IconColumn::make('is_mandatory')->label('Wajib')->boolean(),
         ])->actions([EditAction::make()->label('Ubah'), DeleteAction::make()->label('Hapus')->requiresConfirmation()])->defaultSort('course_id');
     }
-    public static function getPages(): array { return ['index' => Pages\ListCoursePrerequisites::route('/'), 'create' => Pages\CreateCoursePrerequisite::route('/create'), 'edit' => Pages\EditCoursePrerequisite::route('/{record}/edit')]; }
+
+    public static function getPages(): array
+    {
+        return ['index' => Pages\ListCoursePrerequisites::route('/'), 'create' => Pages\CreateCoursePrerequisite::route('/create'), 'edit' => Pages\EditCoursePrerequisite::route('/{record}/edit')];
+    }
 }

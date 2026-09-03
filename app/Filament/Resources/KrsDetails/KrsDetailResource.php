@@ -2,13 +2,14 @@
 
 namespace App\Filament\Resources\KrsDetails;
 
-use App\Models\KrsDetail;
 use App\Filament\Resources\KrsDetails\Pages;
+use App\Models\KrsDetail;
 use Filament\Forms\Components\Select;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\{Actions\DeleteAction, Actions\EditAction, Columns\TextColumn, Table};
+use Filament\Tables\{Columns\TextColumn, Table};
+use Filament\{Actions\DeleteAction, Actions\EditAction};
 use BackedEnum;
 use UnitEnum;
 
@@ -41,8 +42,8 @@ class KrsDetailResource extends Resource
             TextColumn::make('status')->label('Status')->badge(),
             TextColumn::make('registered_at')->label('Terdaftar Pada')->dateTime('d M Y H:i'),
         ])->actions([
-            EditAction::make()->label('Ubah')->visible(fn (KrsDetail $record): bool => $record->status === 'registered'),
-            DeleteAction::make()->label('Hapus')->visible(fn (KrsDetail $record): bool => $record->status === 'registered')->requiresConfirmation(),
+            EditAction::make()->label('Ubah')->visible(fn(KrsDetail $record): bool => $record->status === 'registered'),
+            DeleteAction::make()->label('Hapus')->visible(fn(KrsDetail $record): bool => $record->status === 'registered')->requiresConfirmation(),
         ]);
     }
 

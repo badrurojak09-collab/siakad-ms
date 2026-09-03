@@ -2,18 +2,18 @@
 
 namespace App\Filament\Resources\Transfers;
 
-use App\Filament\Resources\Concerns\ScopesOwnStudentRecords;
-
 use App\Actions\Administration\ProcessTransferAction;
+use App\Filament\Resources\Concerns\ScopesOwnStudentRecords;
 use App\Models\Transfer;
+use Filament\Actions\Action;
 use Filament\Forms\Components\{DatePicker, Select};
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Filament\Notifications\Notification;
+use Filament\{Actions\DeleteAction, Actions\EditAction};
 use Illuminate\Support\Facades\Auth;
 use BackedEnum;
 use UnitEnum;
@@ -21,6 +21,7 @@ use UnitEnum;
 class TransferResource extends Resource
 {
     use ScopesOwnStudentRecords;
+
     protected static ?string $model = Transfer::class;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedArrowsRightLeft;
     protected static string|UnitEnum|null $navigationGroup = 'Administrasi Mahasiswa';
@@ -40,15 +41,30 @@ class TransferResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->columns([
-            TextColumn::make('student.nim')->label('NIM')->searchable(), TextColumn::make('fromStudyProgram.name')->label('Asal'), TextColumn::make('toStudyProgram.name')->label('Tujuan'), TextColumn::make('request_date')->date(), TextColumn::make('status')->badge(), TextColumn::make('approved_at')->dateTime(),
+            TextColumn::make('student.nim')->label('NIM')->searchable(),
+            TextColumn::make('fromStudyProgram.name')->label('Asal'),
+            TextColumn::make('toStudyProgram.name')->label('Tujuan'),
+            TextColumn::make('request_date')->date(),
+            TextColumn::make('status')->badge(),
+            TextColumn::make('approved_at')->dateTime(),
         ])->actions([
-            \Filament\Tables\Actions\EditAction::make()->visible(fn (Transfer $record): bool => $record->status === 'pending'),
-            Action::make('process')->label('Proses')->icon(Heroicon::OutlinedCheckCircle)->requiresConfirmation()->visible(fn (Transfer $record): bool => $record->status === 'pending')
+            EditAction::make()->visible(fn(Transfer $record): bool => $record->status === 'pending'),
+            Action::make('process')
+                ->label('Proses')
+                ->icon(Heroicon::OutlinedCheckCircle)
+                ->requiresConfirmation()
+                ->visible(fn(Transfer $record): bool => $record->status === 'pending')
                 ->form([Select::make('decision')->options(['approved' => 'Setujui', 'rejected' => 'Tolak'])->required()])
-                ->action(function (Transfer $record, array $data): void { app(ProcessTransferAction::class)->execute($record, (int) (Auth::id() ?: 1), $data['decision'] === 'approved'); Notification::make()->title('Mutasi diproses')->success()->send(); }),
-            \Filament\Tables\Actions\DeleteAction::make()->visible(fn (Transfer $record): bool => $record->status === 'pending'),
+                ->action(function (Transfer $record, array $data): void {
+                    app(ProcessTransferAction::class)->execute($record, (int) (Auth::id() ?: 1), $data['decision'] === 'approved');
+                    Notification::make()->title('Mutasi diproses')->success()->send();
+                }),
+            DeleteAction::make()->visible(fn(Transfer $record): bool => $record->status === 'pending'),
         ])->defaultSort('created_at', 'desc');
     }
 
-    public static function getPages(): array { return ['index' => Pages\ListTransfers::route('/'), 'create' => Pages\CreateTransfer::route('/create'), 'edit' => Pages\EditTransfer::route('/{record}/edit')]; }
+    public static function getPages(): array
+    {
+        return ['index' => Pages\ListTransfers::route('/'), 'create' => Pages\CreateTransfer::route('/create'), 'edit' => Pages\EditTransfer::route('/{record}/edit')];
+    }
 }

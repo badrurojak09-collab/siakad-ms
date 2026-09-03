@@ -1,4 +1,39 @@
 <?php
 namespace App\Filament\Resources\AttendanceRecords;
-use App\Models\AttendanceRecord; use App\Filament\Resources\AttendanceRecords\Pages; use Filament\Forms\Components\{DateTimePicker,Select,Textarea}; use Filament\Resources\Resource; use Filament\Schemas\Schema; use Filament\Support\Icons\Heroicon; use Filament\Tables\{Actions\DeleteAction,Actions\EditAction,Columns\TextColumn,Table}; use BackedEnum; use UnitEnum;
-class AttendanceRecordResource extends Resource { protected static ?string $slug='attendance-records'; protected static ?string $model=AttendanceRecord::class; protected static string|BackedEnum|null $navigationIcon=Heroicon::OutlinedCheckCircle; protected static string|UnitEnum|null $navigationGroup='Presensi'; protected static ?string $navigationLabel='Rekaman Presensi'; protected static ?string $modelLabel='Rekaman Presensi'; protected static ?string $pluralModelLabel='Rekaman Presensi'; public static function form(Schema $schema):Schema{return $schema->components([Select::make('attendance_session_id')->label('Sesi Presensi')->relationship('session','meeting_date')->searchable()->preload()->required(),Select::make('student_id')->label('Mahasiswa')->relationship('student','nim')->searchable()->preload()->required(),Select::make('status')->label('Status Kehadiran')->options(['present'=>'Hadir','late'=>'Terlambat','absent'=>'Tidak Hadir','excused'=>'Izin'])->default('present')->required(),DateTimePicker::make('check_in_at')->label('Waktu Check-in')->native(false),Textarea::make('notes')->label('Catatan')->columnSpanFull()]);} public static function table(Table $table):Table{return $table->columns([TextColumn::make('session.courseClass.class_code')->label('Kelas'),TextColumn::make('session.meeting_date')->label('Tanggal')->date(),TextColumn::make('student.nim')->label('NIM')->searchable(),TextColumn::make('student.user.name')->label('Mahasiswa')->searchable(),TextColumn::make('status')->label('Status')->badge(),TextColumn::make('check_in_at')->label('Check-in')->dateTime('d M Y H:i')])->actions([EditAction::make()->label('Ubah'),DeleteAction::make()->label('Hapus')->requiresConfirmation()]);} public static function getPages():array{return ['index'=>Pages\ListAttendanceRecords::route('/'),'create'=>Pages\CreateAttendanceRecord::route('/create'),'edit'=>Pages\EditAttendanceRecord::route('/{record}/edit')];}}
+
+use App\Filament\Resources\AttendanceRecords\Pages;
+use App\Models\AttendanceRecord;
+use Filament\Forms\Components\{DateTimePicker, Select, Textarea};
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\{Columns\TextColumn, Table};
+use Filament\{Actions\DeleteAction, Actions\EditAction};
+use BackedEnum;
+use UnitEnum;
+
+class AttendanceRecordResource extends Resource
+{
+    protected static ?string $slug = 'attendance-records';
+    protected static ?string $model = AttendanceRecord::class;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCheckCircle;
+    protected static string|UnitEnum|null $navigationGroup = 'Presensi';
+    protected static ?string $navigationLabel = 'Rekaman Presensi';
+    protected static ?string $modelLabel = 'Rekaman Presensi';
+    protected static ?string $pluralModelLabel = 'Rekaman Presensi';
+
+    public static function form(Schema $schema): Schema
+    {
+        return $schema->components([Select::make('attendance_session_id')->label('Sesi Presensi')->relationship('session', 'meeting_date')->searchable()->preload()->required(), Select::make('student_id')->label('Mahasiswa')->relationship('student', 'nim')->searchable()->preload()->required(), Select::make('status')->label('Status Kehadiran')->options(['present' => 'Hadir', 'late' => 'Terlambat', 'absent' => 'Tidak Hadir', 'excused' => 'Izin'])->default('present')->required(), DateTimePicker::make('check_in_at')->label('Waktu Check-in')->native(false), Textarea::make('notes')->label('Catatan')->columnSpanFull()]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table->columns([TextColumn::make('session.courseClass.class_code')->label('Kelas'), TextColumn::make('session.meeting_date')->label('Tanggal')->date(), TextColumn::make('student.nim')->label('NIM')->searchable(), TextColumn::make('student.user.name')->label('Mahasiswa')->searchable(), TextColumn::make('status')->label('Status')->badge(), TextColumn::make('check_in_at')->label('Check-in')->dateTime('d M Y H:i')])->actions([EditAction::make()->label('Ubah'), DeleteAction::make()->label('Hapus')->requiresConfirmation()]);
+    }
+
+    public static function getPages(): array
+    {
+        return ['index' => Pages\ListAttendanceRecords::route('/'), 'create' => Pages\CreateAttendanceRecord::route('/create'), 'edit' => Pages\EditAttendanceRecord::route('/{record}/edit')];
+    }
+}

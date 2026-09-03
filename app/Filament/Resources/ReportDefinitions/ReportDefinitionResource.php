@@ -2,13 +2,14 @@
 
 namespace App\Filament\Resources\ReportDefinitions;
 
-use App\Models\ReportDefinition;
 use App\Filament\Resources\ReportDefinitions\Pages;
-use Filament\Forms\Components\{Select,Textarea,TextInput};
+use App\Models\ReportDefinition;
+use Filament\Forms\Components\{Select, Textarea, TextInput};
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\{Actions\DeleteAction,Actions\EditAction,Columns\TextColumn,Table};
+use Filament\Tables\{Columns\TextColumn, Table};
+use Filament\{Actions\DeleteAction, Actions\EditAction};
 use BackedEnum;
 use UnitEnum;
 
@@ -26,7 +27,7 @@ class ReportDefinitionResource extends Resource
     {
         return $schema->components([
             TextInput::make('name')->label('Nama Laporan')->required()->maxLength(150),
-            Select::make('category')->label('Kategori')->options(['akademik'=>'Akademik','keuangan'=>'Keuangan','pmb'=>'PMB','kemahasiswaan'=>'Kemahasiswaan','pddikti'=>'PDDikti'])->required(),
+            Select::make('category')->label('Kategori')->options(['akademik' => 'Akademik', 'keuangan' => 'Keuangan', 'pmb' => 'PMB', 'kemahasiswaan' => 'Kemahasiswaan', 'pddikti' => 'PDDikti'])->required(),
             Textarea::make('query_template')->label('Template Query')->rows(8)->helperText('Hanya administrator berwenang yang boleh mengubah template query.'),
             Textarea::make('parameters')->label('Parameter JSON')->json()->helperText('Masukkan parameter default dalam format JSON.'),
         ]);
@@ -39,8 +40,11 @@ class ReportDefinitionResource extends Resource
             TextColumn::make('category')->label('Kategori')->badge(),
             TextColumn::make('created_by')->label('Dibuat Oleh')->placeholder('-'),
             TextColumn::make('created_at')->label('Dibuat Pada')->dateTime('d M Y H:i')->sortable(),
-        ])->actions([EditAction::make()->label('Ubah'), DeleteAction::make()->label('Hapus')->requiresConfirmation()])->defaultSort('created_at','desc');
+        ])->actions([EditAction::make()->label('Ubah'), DeleteAction::make()->label('Hapus')->requiresConfirmation()])->defaultSort('created_at', 'desc');
     }
 
-    public static function getPages(): array { return ['index'=>Pages\ListReportDefinitions::route('/'),'create'=>Pages\CreateReportDefinition::route('/create'),'edit'=>Pages\EditReportDefinition::route('/{record}/edit')]; }
+    public static function getPages(): array
+    {
+        return ['index' => Pages\ListReportDefinitions::route('/'), 'create' => Pages\CreateReportDefinition::route('/create'), 'edit' => Pages\EditReportDefinition::route('/{record}/edit')];
+    }
 }

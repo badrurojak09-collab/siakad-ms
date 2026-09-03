@@ -1,13 +1,14 @@
 <?php
 namespace App\Filament\Resources\Lecturers;
 
-use App\Models\Lecturer;
 use App\Filament\Resources\Lecturers\Pages;
+use App\Models\Lecturer;
 use Filament\Forms\Components\{DatePicker, Select, TextInput, Textarea};
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\{Actions\DeleteAction, Actions\EditAction, Columns\TextColumn, Filters\SelectFilter, Table};
+use Filament\Tables\{Columns\TextColumn, Filters\SelectFilter, Table};
+use Filament\{Actions\DeleteAction, Actions\EditAction};
 use BackedEnum;
 use UnitEnum;
 
@@ -31,6 +32,7 @@ class LecturerResource extends Resource
             Textarea::make('specialization')->label('Bidang Keahlian')->columnSpanFull(),
         ]);
     }
+
     public static function table(Table $table): Table
     {
         return $table->columns([
@@ -41,5 +43,9 @@ class LecturerResource extends Resource
             TextColumn::make('join_date')->label('Tanggal Bergabung')->date('d M Y'),
         ])->actions([EditAction::make()->label('Ubah'), DeleteAction::make()->label('Hapus')->requiresConfirmation()])->defaultSort('nidn');
     }
-    public static function getPages(): array { return ['index' => Pages\ListLecturers::route('/'), 'create' => Pages\CreateLecturer::route('/create'), 'edit' => Pages\EditLecturer::route('/{record}/edit')]; }
+
+    public static function getPages(): array
+    {
+        return ['index' => Pages\ListLecturers::route('/'), 'create' => Pages\CreateLecturer::route('/create'), 'edit' => Pages\EditLecturer::route('/{record}/edit')];
+    }
 }

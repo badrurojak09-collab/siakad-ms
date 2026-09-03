@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\KrsHeaders;
 
 use App\Filament\Resources\Concerns\ScopesOwnStudentRecords;
-
 use App\Filament\Resources\KrsHeaders\RelationManagers\{DetailsRelationManager, LogsRelationManager};
 use App\Models\KrsHeader;
 use Filament\Forms\Components\{Select, TextInput};
@@ -12,12 +11,14 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\{Actions\DeleteAction, Actions\EditAction};
 use BackedEnum;
 use UnitEnum;
 
 class KrsHeaderResource extends Resource
 {
     use ScopesOwnStudentRecords;
+
     protected static ?string $model = KrsHeader::class;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
     protected static string|UnitEnum|null $navigationGroup = 'KRS & Registrasi';
@@ -36,11 +37,15 @@ class KrsHeaderResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->columns([
-            TextColumn::make('id')->sortable(), TextColumn::make('student.nim')->label('NIM')->searchable(), TextColumn::make('semester.id')->label('Semester'),
-            TextColumn::make('total_credits')->label('SKS'), TextColumn::make('status')->badge(), TextColumn::make('submitted_at')->dateTime()->sortable(),
+            TextColumn::make('id')->sortable(),
+            TextColumn::make('student.nim')->label('NIM')->searchable(),
+            TextColumn::make('semester.id')->label('Semester'),
+            TextColumn::make('total_credits')->label('SKS'),
+            TextColumn::make('status')->badge(),
+            TextColumn::make('submitted_at')->dateTime()->sortable(),
         ])->actions([
-            \Filament\Tables\Actions\EditAction::make()->visible(fn (KrsHeader $record): bool => in_array($record->status, ['draft', 'revision_required'], true)),
-            \Filament\Tables\Actions\DeleteAction::make()->visible(fn (KrsHeader $record): bool => $record->status === 'draft'),
+            EditAction::make()->visible(fn(KrsHeader $record): bool => in_array($record->status, ['draft', 'revision_required'], true)),
+            DeleteAction::make()->visible(fn(KrsHeader $record): bool => $record->status === 'draft'),
         ])->defaultSort('created_at', 'desc');
     }
 

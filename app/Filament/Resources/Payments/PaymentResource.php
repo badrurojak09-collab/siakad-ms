@@ -1,4 +1,39 @@
 <?php
 namespace App\Filament\Resources\Payments;
-use App\Models\Payment; use App\Filament\Resources\Payments\Pages; use Filament\Forms\Components\{DateTimePicker,Select,TextInput}; use Filament\Resources\Resource; use Filament\Schemas\Schema; use Filament\Support\Icons\Heroicon; use Filament\Tables\{Actions\DeleteAction,Actions\EditAction,Columns\TextColumn,Table}; use BackedEnum; use UnitEnum;
-class PaymentResource extends Resource { protected static ?string $slug='payments'; protected static ?string $model=Payment::class; protected static string|BackedEnum|null $navigationIcon=Heroicon::OutlinedCreditCard; protected static string|UnitEnum|null $navigationGroup='Keuangan'; protected static ?string $navigationLabel='Pembayaran SPP'; protected static ?string $modelLabel='Pembayaran SPP'; protected static ?string $pluralModelLabel='Pembayaran SPP'; public static function form(Schema $schema):Schema{return $schema->components([Select::make('academic_bill_id')->label('Tagihan')->relationship('bill','bill_number')->searchable()->preload()->required(),Select::make('student_id')->label('Mahasiswa')->relationship('student','nim')->searchable()->preload()->required(),TextInput::make('payment_number')->label('Nomor Pembayaran')->required()->maxLength(80),TextInput::make('amount')->label('Nominal')->numeric()->minValue(0.01)->required(),Select::make('method')->label('Metode')->options(['cash'=>'Tunai','transfer'=>'Transfer','virtual_account'=>'Virtual Account','qris'=>'QRIS'])->required(),Select::make('status')->label('Status')->options(['pending'=>'Menunggu','confirmed'=>'Dikonfirmasi','failed'=>'Gagal','void'=>'Dibatalkan'])->default('confirmed')->required(),DateTimePicker::make('paid_at')->label('Dibayar Pada')->required(),TextInput::make('reference')->label('Referensi')->maxLength(150)]);} public static function table(Table $table):Table{return $table->columns([TextColumn::make('payment_number')->label('Nomor')->searchable(),TextColumn::make('bill.bill_number')->label('Tagihan'),TextColumn::make('student.nim')->label('NIM'),TextColumn::make('amount')->label('Nominal')->money('IDR'),TextColumn::make('method')->label('Metode')->badge(),TextColumn::make('status')->label('Status')->badge(),TextColumn::make('paid_at')->label('Waktu')->dateTime('d M Y H:i')])->actions([EditAction::make()->label('Ubah')->visible(fn(Payment $r)=>$r->status==='pending'),DeleteAction::make()->label('Hapus')->visible(fn(Payment $r)=>$r->status==='pending')->requiresConfirmation()]);} public static function getPages():array{return ['index'=>Pages\ListPayments::route('/'),'create'=>Pages\CreatePayment::route('/create'),'edit'=>Pages\EditPayment::route('/{record}/edit')];}}
+
+use App\Filament\Resources\Payments\Pages;
+use App\Models\Payment;
+use Filament\Forms\Components\{DateTimePicker, Select, TextInput};
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables\{Columns\TextColumn, Table};
+use Filament\{Actions\DeleteAction, Actions\EditAction};
+use BackedEnum;
+use UnitEnum;
+
+class PaymentResource extends Resource
+{
+    protected static ?string $slug = 'payments';
+    protected static ?string $model = Payment::class;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCreditCard;
+    protected static string|UnitEnum|null $navigationGroup = 'Keuangan';
+    protected static ?string $navigationLabel = 'Pembayaran SPP';
+    protected static ?string $modelLabel = 'Pembayaran SPP';
+    protected static ?string $pluralModelLabel = 'Pembayaran SPP';
+
+    public static function form(Schema $schema): Schema
+    {
+        return $schema->components([Select::make('academic_bill_id')->label('Tagihan')->relationship('bill', 'bill_number')->searchable()->preload()->required(), Select::make('student_id')->label('Mahasiswa')->relationship('student', 'nim')->searchable()->preload()->required(), TextInput::make('payment_number')->label('Nomor Pembayaran')->required()->maxLength(80), TextInput::make('amount')->label('Nominal')->numeric()->minValue(0.01)->required(), Select::make('method')->label('Metode')->options(['cash' => 'Tunai', 'transfer' => 'Transfer', 'virtual_account' => 'Virtual Account', 'qris' => 'QRIS'])->required(), Select::make('status')->label('Status')->options(['pending' => 'Menunggu', 'confirmed' => 'Dikonfirmasi', 'failed' => 'Gagal', 'void' => 'Dibatalkan'])->default('confirmed')->required(), DateTimePicker::make('paid_at')->label('Dibayar Pada')->required(), TextInput::make('reference')->label('Referensi')->maxLength(150)]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table->columns([TextColumn::make('payment_number')->label('Nomor')->searchable(), TextColumn::make('bill.bill_number')->label('Tagihan'), TextColumn::make('student.nim')->label('NIM'), TextColumn::make('amount')->label('Nominal')->money('IDR'), TextColumn::make('method')->label('Metode')->badge(), TextColumn::make('status')->label('Status')->badge(), TextColumn::make('paid_at')->label('Waktu')->dateTime('d M Y H:i')])->actions([EditAction::make()->label('Ubah')->visible(fn(Payment $r) => $r->status === 'pending'), DeleteAction::make()->label('Hapus')->visible(fn(Payment $r) => $r->status === 'pending')->requiresConfirmation()]);
+    }
+
+    public static function getPages(): array
+    {
+        return ['index' => Pages\ListPayments::route('/'), 'create' => Pages\CreatePayment::route('/create'), 'edit' => Pages\EditPayment::route('/{record}/edit')];
+    }
+}
