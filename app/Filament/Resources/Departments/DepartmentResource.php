@@ -1,14 +1,21 @@
 <?php
+
 namespace App\Filament\Resources\Departments;
 
-use App\Filament\Resources\Departments\Pages;
+use App\Filament\Resources\Departments\Pages\CreateDepartment;
+use App\Filament\Resources\Departments\Pages\EditDepartment;
+use App\Filament\Resources\Departments\Pages\ListDepartments;
+use App\Filament\Resources\Departments\Pages\ViewDepartment;
+use App\Filament\Resources\Departments\Schemas\DepartmentForm;
+use App\Filament\Resources\Departments\Schemas\DepartmentInfolist;
+use App\Filament\Resources\Departments\Tables\DepartmentsTable;
 use App\Models\Department;
-use Filament\Forms\Components\{Select, TextInput};
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\{Columns\TextColumn, Table};
-use Filament\{Actions\DeleteAction, Actions\EditAction};
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use BackedEnum;
 use UnitEnum;
 
@@ -24,16 +31,41 @@ class DepartmentResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([Select::make('faculty_id')->label('Fakultas')->relationship('faculty', 'name')->searchable()->preload()->required(), TextInput::make('code')->label('Kode Departemen')->required()->unique(ignoreRecord: true)->maxLength(30), TextInput::make('name')->label('Nama Departemen')->required()->maxLength(255), Select::make('head_of_dept_id')->label('Ketua Departemen')->relationship('headOfDepartment', 'nidn')->searchable()->preload()->nullable()]);
+        return DepartmentForm::configure($schema);
+    }
+
+    public static function infolist(Schema $schema): Schema
+    {
+        return DepartmentInfolist::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
-        return $table->columns([TextColumn::make('faculty.name')->label('Fakultas')->searchable(), TextColumn::make('code')->label('Kode')->searchable()->sortable(), TextColumn::make('name')->label('Nama Departemen')->searchable()->sortable(), TextColumn::make('headOfDepartment.user.name')->label('Ketua Departemen')->placeholder('Belum ditetapkan'), TextColumn::make('study_programs_count')->label('Jumlah Program Studi')->counts('studyPrograms')])->actions([EditAction::make()->label('Ubah'), DeleteAction::make()->label('Hapus')->requiresConfirmation()])->defaultSort('code');
+        return DepartmentsTable::configure($table);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
     }
 
     public static function getPages(): array
     {
-        return ['index' => Pages\ListDepartments::route('/'), 'create' => Pages\CreateDepartment::route('/create'), 'edit' => Pages\EditDepartment::route('/{record}/edit')];
+        return [
+            'index' => ListDepartments::route('/'),
+            'create' => CreateDepartment::route('/create'),
+            'view' => ViewDepartment::route('/{record}'),
+            'edit' => EditDepartment::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRecordRouteBindingEloquentQuery(): Builder
+    {
+        return parent::getRecordRouteBindingEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }

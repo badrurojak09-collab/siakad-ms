@@ -2,15 +2,20 @@
 
 namespace App\Filament\Resources\Courses;
 
+use App\Filament\Resources\Courses\Pages\CreateCourse;
+use App\Filament\Resources\Courses\Pages\EditCourse;
+use App\Filament\Resources\Courses\Pages\ListCourses;
+use App\Filament\Resources\Courses\Pages\ViewCourse;
+use App\Filament\Resources\Courses\Schemas\CourseForm;
+use App\Filament\Resources\Courses\Schemas\CourseInfolist;
+use App\Filament\Resources\Courses\Tables\CoursesTable;
 use App\Models\Course;
-use App\Filament\Resources\Courses\Pages;
-use Filament\Forms\Components\{Select, TextInput, Textarea};
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\{Columns\TextColumn, Table};
-use Filament\Actions\EditAction;
-use Filament\Actions\DeleteAction;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use BackedEnum;
 use UnitEnum;
 
@@ -22,32 +27,45 @@ class CourseResource extends Resource
     protected static ?string $navigationLabel = 'Mata Kuliah';
     protected static ?string $modelLabel = 'Mata Kuliah';
     protected static ?string $pluralModelLabel = 'Mata Kuliah';
+    protected static ?string $recordTitleAttribute = 'Matakuliah';
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([
-            TextInput::make('code')->label('Kode Mata Kuliah')->required()->unique(ignoreRecord: true)->maxLength(30),
-            TextInput::make('name')->label('Nama Mata Kuliah')->required()->maxLength(255),
-            TextInput::make('credits')->label('Total SKS')->numeric()->minValue(0)->maxValue(20)->required(),
-            TextInput::make('theory_credits')->label('SKS Teori')->numeric()->minValue(0)->maxValue(20)->default(0)->required(),
-            TextInput::make('practice_credits')->label('SKS Praktik')->numeric()->minValue(0)->maxValue(20)->default(0)->required(),
-            Select::make('course_type')->label('Jenis Mata Kuliah')->options(['mandatory' => 'Wajib', 'elective' => 'Pilihan', 'general' => 'Umum'])->nullable(),
-            Textarea::make('description')->label('Deskripsi')->columnSpanFull(),
-        ]);
+        return CourseForm::configure($schema);
     }
+
+    public static function infolist(Schema $schema): Schema
+    {
+        return CourseInfolist::configure($schema);
+    }
+
     public static function table(Table $table): Table
     {
-        return $table->columns([
-            TextColumn::make('code')->label('Kode')->searchable()->sortable(),
-            TextColumn::make('name')->label('Nama Mata Kuliah')->searchable()->sortable(),
-            TextColumn::make('credits')->label('SKS')->sortable(),
-            TextColumn::make('theory_credits')->label('SKS Teori'),
-            TextColumn::make('practice_credits')->label('SKS Praktik'),
-            TextColumn::make('course_type')->label('Jenis')->badge(),
-        ])->actions([EditAction::make()->label('Ubah'), DeleteAction::make()->label('Hapus')->requiresConfirmation()])->defaultSort('code');
+        return CoursesTable::configure($table);
     }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
     public static function getPages(): array
     {
-        return ['index' => Pages\ListCourses::route('/'), 'create' => Pages\CreateCourse::route('/create'), 'edit' => Pages\EditCourse::route('/{record}/edit')];
+        return [
+            'index' => ListCourses::route('/'),
+            'create' => CreateCourse::route('/create'),
+            'view' => ViewCourse::route('/{record}'),
+            'edit' => EditCourse::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRecordRouteBindingEloquentQuery(): Builder
+    {
+        return parent::getRecordRouteBindingEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }

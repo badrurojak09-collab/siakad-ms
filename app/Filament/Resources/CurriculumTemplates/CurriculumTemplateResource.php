@@ -1,14 +1,21 @@
 <?php
+
 namespace App\Filament\Resources\CurriculumTemplates;
 
-use App\Filament\Resources\CurriculumTemplates\Pages;
+use App\Filament\Resources\CurriculumTemplates\Pages\CreateCurriculumTemplate;
+use App\Filament\Resources\CurriculumTemplates\Pages\EditCurriculumTemplate;
+use App\Filament\Resources\CurriculumTemplates\Pages\ListCurriculumTemplates;
+use App\Filament\Resources\CurriculumTemplates\Pages\ViewCurriculumTemplate;
+use App\Filament\Resources\CurriculumTemplates\Schemas\CurriculumTemplateForm;
+use App\Filament\Resources\CurriculumTemplates\Schemas\CurriculumTemplateInfolist;
+use App\Filament\Resources\CurriculumTemplates\Tables\CurriculumTemplatesTable;
 use App\Models\CurriculumTemplate;
-use Filament\Forms\Components\{Select, TextInput};
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\{Columns\TextColumn, Table};
-use Filament\{Actions\DeleteAction, Actions\EditAction};
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use BackedEnum;
 use UnitEnum;
 
@@ -21,19 +28,54 @@ class CurriculumTemplateResource extends Resource
     protected static ?string $navigationLabel = 'Template Kurikulum';
     protected static ?string $modelLabel = 'Template Kurikulum';
     protected static ?string $pluralModelLabel = 'Template Kurikulum';
+    protected static ?string $recordTitleAttribute = 'Template Kurikulum';
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->with(['curriculum'])
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([Select::make('curriculum_id')->label('Kurikulum')->relationship('curriculum', 'name')->searchable()->preload()->required(), TextInput::make('entry_year')->label('Tahun Masuk')->numeric()->minValue(1900)->maxValue((int) date('Y') + 5)->required(), TextInput::make('max_sks_per_semester')->label('Maksimal SKS per Semester')->numeric()->minValue(1)->maxValue(40)->default(24)->required(), TextInput::make('min_sks_per_semester')->label('Minimal SKS per Semester')->numeric()->minValue(0)->maxValue(40)->default(12)->required()->lte('max_sks_per_semester'), TextInput::make('total_credits_required')->label('Total SKS Kelulusan')->numeric()->minValue(1)->maxValue(300)->required()]);
+        return CurriculumTemplateForm::configure($schema);
+    }
+
+    public static function infolist(Schema $schema): Schema
+    {
+        return CurriculumTemplateInfolist::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
-        return $table->columns([TextColumn::make('curriculum.name')->label('Kurikulum')->searchable(), TextColumn::make('entry_year')->label('Tahun Masuk'), TextColumn::make('min_sks_per_semester')->label('Minimal SKS'), TextColumn::make('max_sks_per_semester')->label('Maksimal SKS'), TextColumn::make('total_credits_required')->label('Total SKS Kelulusan')])->actions([EditAction::make()->label('Ubah'), DeleteAction::make()->label('Hapus')->requiresConfirmation()]);
+        return CurriculumTemplatesTable::configure($table);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
     }
 
     public static function getPages(): array
     {
-        return ['index' => Pages\ListCurriculumTemplates::route('/'), 'create' => Pages\CreateCurriculumTemplate::route('/create'), 'edit' => Pages\EditCurriculumTemplate::route('/{record}/edit')];
+        return [
+            'index' => ListCurriculumTemplates::route('/'),
+            'create' => CreateCurriculumTemplate::route('/create'),
+            'view' => ViewCurriculumTemplate::route('/{record}'),
+            'edit' => EditCurriculumTemplate::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRecordRouteBindingEloquentQuery(): Builder
+    {
+        return parent::getRecordRouteBindingEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }

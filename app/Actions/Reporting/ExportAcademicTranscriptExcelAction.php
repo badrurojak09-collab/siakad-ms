@@ -4,9 +4,9 @@ namespace App\Actions\Reporting;
 
 use App\Actions\Grading\SignAcademicTranscriptAction;
 use App\Models\AcademicTranscript;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExportAcademicTranscriptExcelAction
@@ -56,7 +56,7 @@ class ExportAcademicTranscriptExcelAction
                 $item->letter_grade,
                 (float) $item->grade_point,
                 (float) $item->quality_points,
-            ]], null, 'A'.($index + 2));
+            ]], null, 'A' . ($index + 2));
         }
         $detail->getStyle('A1:H1')->getFont()->setBold(true);
         $detail->getStyle('A1:H1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
@@ -65,7 +65,7 @@ class ExportAcademicTranscriptExcelAction
         }
         $detail->freezePane('A2');
 
-        $path = storage_path('app/'.'transkrip-'.$transcript->student_id.'-'.$transcript->id.'.xlsx');
+        $path = storage_path('app/' . 'transkrip-' . $transcript->student_id . '-' . $transcript->id . '.xlsx');
         (new Xlsx($spreadsheet))->save($path);
         $spreadsheet->disconnectWorksheets();
         unset($spreadsheet);

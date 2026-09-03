@@ -31,6 +31,6 @@ class ExportAcademicTranscriptPdfAction
 
     private function filename(AcademicTranscript $transcript, string $extension): string
     {
-        return 'transkrip-'.$transcript->student_id.'-'.$transcript->id.'.'.$extension;
+        return 'transkrip-' . $transcript->student_id . '-' . $transcript->id . '.' . $extension;
     }
 }

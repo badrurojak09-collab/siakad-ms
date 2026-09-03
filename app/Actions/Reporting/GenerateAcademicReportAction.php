@@ -1,4 +1,17 @@
 <?php
 namespace App\Actions\Reporting;
-use App\Models\{Student,Semester,GeneratedReport}; use Illuminate\Support\Str;
-class GenerateAcademicReportAction { public function execute(Student $student,?Semester $semester,string $reportType,int $actorId): GeneratedReport { $allowed=['student_summary','semester_recap','transcript_preview']; if(!in_array($reportType,$allowed,true)) throw new \InvalidArgumentException('Jenis laporan tidak terdaftar.'); $summary=app(BuildAcademicSummaryAction::class)->execute($student,$semester); return GeneratedReport::create(['tenant_id'=>$student->tenant_id,'file_format'=>'json','parameters_used'=>['report_type'=>$reportType,'student_id'=>$student->id,'semester_id'=>$semester?->id],'generated_at'=>now(),'generated_by'=>$actorId,'metadata'=>['report_type'=>$reportType,'summary'=>$summary,'report_key'=>Str::uuid()->toString()]]); } }
+
+use App\Models\{Student, Semester, GeneratedReport};
+use Illuminate\Support\Str;
+
+class GenerateAcademicReportAction
+{
+    public function execute(Student $student, ?Semester $semester, string $reportType, int $actorId): GeneratedReport
+    {
+        $allowed = ['student_summary', 'semester_recap', 'transcript_preview'];
+        if (!in_array($reportType, $allowed, true))
+            throw new \InvalidArgumentException('Jenis laporan tidak terdaftar.');
+        $summary = app(BuildAcademicSummaryAction::class)->execute($student, $semester);
+        return GeneratedReport::create(['tenant_id' => $student->tenant_id, 'file_format' => 'json', 'parameters_used' => ['report_type' => $reportType, 'student_id' => $student->id, 'semester_id' => $semester?->id], 'generated_at' => now(), 'generated_by' => $actorId, 'metadata' => ['report_type' => $reportType, 'summary' => $summary, 'report_key' => Str::uuid()->toString()]]);
+    }
+}

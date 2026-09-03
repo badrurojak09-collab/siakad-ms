@@ -2,33 +2,74 @@
 
 namespace App\Filament\Resources\AcademicYears;
 
+use App\Filament\Resources\AcademicYears\Pages\CreateAcademicYear;
+use App\Filament\Resources\AcademicYears\Pages\EditAcademicYear;
+use App\Filament\Resources\AcademicYears\Pages\ListAcademicYears;
+use App\Filament\Resources\AcademicYears\Pages\ViewAcademicYear;
+use App\Filament\Resources\AcademicYears\Schemas\AcademicYearForm;
+use App\Filament\Resources\AcademicYears\Schemas\AcademicYearInfolist;
+use App\Filament\Resources\AcademicYears\Tables\AcademicYearsTable;
 use App\Models\AcademicYear;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
-use Filament\Forms\Components\{TextInput, Textarea};
-use Filament\Tables\Table;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Support\Icons\Heroicon;
-use Filament\Actions\{EditAction, DeleteAction};
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use BackedEnum;
 use UnitEnum;
 
 class AcademicYearResource extends Resource
 {
     protected static ?string $model = AcademicYear::class;
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+
     protected static string|UnitEnum|null $navigationGroup = 'Data Akademik';
-    protected static ?string $navigationLabel = 'Periode Akademik';
+
+    protected static ?string $navigationLabel = 'Tahun Akademik';
+
+    protected static ?string $pluralLabel = 'Tahun Akademik';
+
+    protected static ?string $recordTitleAttribute = 'Tahun Akademik';
+
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([TextInput::make('year_code')->label('Year Code')->maxLength(255), Textarea::make('description')->columnSpanFull(),]);
+        return AcademicYearForm::configure($schema);
     }
+
+    public static function infolist(Schema $schema): Schema
+    {
+        return AcademicYearInfolist::configure($schema);
+    }
+
     public static function table(Table $table): Table
     {
-        return $table->columns([TextColumn::make('id')->sortable(), TextColumn::make('code')->searchable(), TextColumn::make('name')->searchable(), TextColumn::make('status')->badge(), TextColumn::make('created_at')->dateTime()->sortable()])->actions([EditAction::make(), DeleteAction::make()])->defaultSort('created_at', 'desc');
+        return AcademicYearsTable::configure($table);
     }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
     public static function getPages(): array
     {
-        return ['index' => Pages\ListAcademicYears::route('/'), 'create' => Pages\CreateAcademicYear::route('/create'), 'edit' => Pages\EditAcademicYear::route('/{record}/edit')];
+        return [
+            'index' => ListAcademicYears::route('/'),
+            'create' => CreateAcademicYear::route('/create'),
+            'view' => ViewAcademicYear::route('/{record}'),
+            'edit' => EditAcademicYear::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRecordRouteBindingEloquentQuery(): Builder
+    {
+        return parent::getRecordRouteBindingEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }

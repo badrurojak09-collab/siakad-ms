@@ -1,14 +1,21 @@
 <?php
+
 namespace App\Filament\Resources\Semesters;
 
+use App\Filament\Resources\Semesters\Pages\CreateSemester;
+use App\Filament\Resources\Semesters\Pages\EditSemester;
+use App\Filament\Resources\Semesters\Pages\ListSemesters;
+use App\Filament\Resources\Semesters\Pages\ViewSemester;
+use App\Filament\Resources\Semesters\Schemas\SemesterForm;
+use App\Filament\Resources\Semesters\Schemas\SemesterInfolist;
+use App\Filament\Resources\Semesters\Tables\SemestersTable;
 use App\Models\Semester;
-use Filament\Forms\Components\{TextInput, Textarea};
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Filament\{Actions\DeleteAction, Actions\EditAction};
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use BackedEnum;
 use UnitEnum;
 
@@ -17,23 +24,46 @@ class SemesterResource extends Resource
     protected static ?string $model = Semester::class;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
     protected static string|UnitEnum|null $navigationGroup = 'Data Akademik';
-    protected static ?string $navigationLabel = 'Periode Akademik';
+    protected static ?string $navigationLabel = 'Semester';
+    protected static ?string $pluralModelLabel = 'Semester';
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([
-            TextInput::make('semester_type')->label('Semester Type')->maxLength(255),
-            Textarea::make('description')->columnSpanFull(),
-        ]);
+        return SemesterForm::configure($schema);
+    }
+
+    public static function infolist(Schema $schema): Schema
+    {
+        return SemesterInfolist::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
-        return $table->columns([TextColumn::make('id')->sortable(), TextColumn::make('code')->searchable(), TextColumn::make('name')->searchable(), TextColumn::make('status')->badge(), TextColumn::make('created_at')->dateTime()->sortable()])->actions([EditAction::make(), DeleteAction::make()])->defaultSort('created_at', 'desc');
+        return SemestersTable::configure($table);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
     }
 
     public static function getPages(): array
     {
-        return ['index' => Pages\ListSemesters::route('/'), 'create' => Pages\CreateSemester::route('/create'), 'edit' => Pages\EditSemester::route('/{record}/edit')];
+        return [
+            'index' => ListSemesters::route('/'),
+            'create' => CreateSemester::route('/create'),
+            'view' => ViewSemester::route('/{record}'),
+            'edit' => EditSemester::route('/{record}/edit'),
+        ];
+    }
+
+    public static function getRecordRouteBindingEloquentQuery(): Builder
+    {
+        return parent::getRecordRouteBindingEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }

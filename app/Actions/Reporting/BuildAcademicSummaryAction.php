@@ -1,4 +1,31 @@
 <?php
 namespace App\Actions\Reporting;
-use App\Models\{Student,Semester,StudentGrade};
-class BuildAcademicSummaryAction { public function execute(Student $student,?Semester $semester=null): array { $grades=StudentGrade::where('student_id',$student->id)->where('grade_status','published')->with('courseClass.course','courseClass.semester')->when($semester,fn($q)=>$q->whereHas('courseClass',fn($x)=>$x->where('semester_id',$semester->id)))->get(); $points=['A'=>4,'AB'=>3.5,'B'=>3,'BC'=>2.5,'C'=>2,'D'=>1,'E'=>0]; $rows=[];$credits=0;$quality=0;$passed=0;$failed=0;foreach($grades as $g){$c=$g->courseClass?->course;$sks=(int)($c?->credits??0);$gp=(float)($g->grade_point??($points[$g->letter_grade]??0));$credits+=$sks;$quality+=$sks*$gp;if($gp>=2)$passed++;else $failed++;$rows[]=['course_code'=>$c?->code,'course_name'=>$c?->name,'credits'=>$sks,'score'=>$g->final_score,'letter_grade'=>$g->letter_grade,'grade_point'=>$gp];}return ['student_id'=>$student->id,'semester_id'=>$semester?->id,'total_courses'=>count($rows),'total_credits'=>$credits,'quality_points'=>round($quality,2),'gpa'=>$credits?round($quality/$credits,2):0,'passed_courses'=>$passed,'failed_courses'=>$failed,'courses'=>$rows]; } }
+
+use App\Models\{Student, Semester, StudentGrade};
+
+class BuildAcademicSummaryAction
+{
+    public function execute(Student $student, ?Semester $semester = null): array
+    {
+        $grades = StudentGrade::where('student_id', $student->id)->where('grade_status', 'published')->with('courseClass.course', 'courseClass.semester')->when($semester, fn($q) => $q->whereHas('courseClass', fn($x) => $x->where('semester_id', $semester->id)))->get();
+        $points = ['A' => 4, 'AB' => 3.5, 'B' => 3, 'BC' => 2.5, 'C' => 2, 'D' => 1, 'E' => 0];
+        $rows = [];
+        $credits = 0;
+        $quality = 0;
+        $passed = 0;
+        $failed = 0;
+        foreach ($grades as $g) {
+            $c = $g->courseClass?->course;
+            $sks = (int) ($c?->credits ?? 0);
+            $gp = (float) ($g->grade_point ?? ($points[$g->letter_grade] ?? 0));
+            $credits += $sks;
+            $quality += $sks * $gp;
+            if ($gp >= 2)
+                $passed++;
+            else
+                $failed++;
+            $rows[] = ['course_code' => $c?->code, 'course_name' => $c?->name, 'credits' => $sks, 'score' => $g->final_score, 'letter_grade' => $g->letter_grade, 'grade_point' => $gp];
+        }
+        return ['student_id' => $student->id, 'semester_id' => $semester?->id, 'total_courses' => count($rows), 'total_credits' => $credits, 'quality_points' => round($quality, 2), 'gpa' => $credits ? round($quality / $credits, 2) : 0, 'passed_courses' => $passed, 'failed_courses' => $failed, 'courses' => $rows];
+    }
+}
