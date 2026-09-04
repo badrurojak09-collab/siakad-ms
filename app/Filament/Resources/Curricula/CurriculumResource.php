@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Curricula;
 
+use App\Filament\Clusters\CurriculumCluster;
 use App\Filament\Resources\Curricula\Pages\CreateCurriculum;
 use App\Filament\Resources\Curricula\Pages\EditCurriculum;
 use App\Filament\Resources\Curricula\Pages\ListCurricula;
@@ -23,9 +24,10 @@ use UnitEnum;
 class CurriculumResource extends Resource
 {
     protected static ?string $slug = 'curriculums';
+    protected static ?string $cluster = CurriculumCluster::class;
     protected static ?string $model = Curriculum::class;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookOpen;
-    protected static string|UnitEnum|null $navigationGroup = 'Kurikulum & Mata Kuliah';
+    // protected static string|UnitEnum|null $navigationGroup = 'Kurikulum & Mata Kuliah';
     protected static ?int $navigationSort = 1;
     protected static ?string $navigationLabel = 'Kurikulum';
     protected static ?string $modelLabel = 'Kurikulum';

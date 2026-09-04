@@ -33,7 +33,6 @@ class AcademicAdvisorResource extends Resource
             Section::make('Penetapan Pembimbing')
                 ->description('Tentukan mahasiswa dan dosen pembimbing akademik pada tenant aktif.')
                 ->icon(Heroicon::OutlinedUserGroup)
-                ->columns(2)
                 ->schema([
                     Select::make('student_id')
                         ->label('Mahasiswa')
@@ -51,7 +50,6 @@ class AcademicAdvisorResource extends Resource
             Section::make('Periode Akademik')
                 ->description('Periode penugasan pembimbing akademik.')
                 ->icon(Heroicon::OutlinedCalendarDays)
-                ->columns(2)
                 ->schema([
                     Select::make('semester_id')
                         ->label('Semester')

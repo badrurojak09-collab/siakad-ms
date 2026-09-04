@@ -12,11 +12,14 @@ trait ScopesOwnStudentRecords
     {
         $query = parent::getEloquentQuery();
         $user = Auth::user();
-        if (! $user || ! $user->hasRole('student')) return $query;
+        if (!$user || !$user->hasRole('student'))
+            return $query;
 
         $studentId = $user->student?->getKey();
-        if (! $studentId) return $query->whereRaw('1 = 0');
-        if ($query->getModel() instanceof Student) return $query->whereKey($studentId);
+        if (!$studentId)
+            return $query->whereRaw('1 = 0');
+        if ($query->getModel() instanceof Student)
+            return $query->whereKey($studentId);
         return $query->where($query->getModel()->qualifyColumn('student_id'), $studentId);
     }
 }

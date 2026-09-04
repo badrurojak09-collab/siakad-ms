@@ -2,6 +2,7 @@
 namespace App\Filament\Resources\Students;
 
 use App\Filament\Resources\Concerns\ScopesOwnStudentRecords;
+use App\Filament\Resources\Students\Tables\StudentsTable;
 use App\Filament\Resources\Students\Pages;
 use App\Models\Student;
 use Filament\Forms\Components\{DatePicker, Select, TextInput, Textarea};
@@ -41,17 +42,18 @@ class StudentResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table->columns([
-            TextColumn::make('nim')->label('NIM')->searchable()->sortable(),
-            TextColumn::make('user.name')->label('Nama Mahasiswa')->searchable()->sortable(),
-            TextColumn::make('studyProgram.name')->label('Program Studi')->searchable(),
-            TextColumn::make('entry_year')->label('Tahun Masuk')->sortable(),
-            TextColumn::make('admission_type')->label('Jalur Masuk')->badge(),
-            TextColumn::make('status')->label('Status')->badge(),
-        ])->filters([SelectFilter::make('status')->label('Status')->options(['active' => 'Aktif', 'inactive' => 'Tidak Aktif', 'graduated' => 'Lulus', 'dropped' => 'Mengundurkan Diri', 'leave' => 'Cuti'])])->actions([
-            EditAction::make()->label('Ubah'),
-            DeleteAction::make()->label('Hapus')->requiresConfirmation(),
-        ])->defaultSort('nim');
+        return StudentsTable::configure($table);
+        // return $table->columns([
+        //     TextColumn::make('nim')->label('NIM')->searchable()->sortable(),
+        //     TextColumn::make('user.name')->label('Nama Mahasiswa')->searchable()->sortable(),
+        //     TextColumn::make('studyProgram.name')->label('Program Studi')->searchable(),
+        //     TextColumn::make('entry_year')->label('Tahun Masuk')->sortable(),
+        //     TextColumn::make('admission_type')->label('Jalur Masuk')->badge(),
+        //     TextColumn::make('status')->label('Status')->badge(),
+        // ])->filters([SelectFilter::make('status')->label('Status')->options(['active' => 'Aktif', 'inactive' => 'Tidak Aktif', 'graduated' => 'Lulus', 'dropped' => 'Mengundurkan Diri', 'leave' => 'Cuti'])])->actions([
+        //     EditAction::make()->label('Ubah'),
+        //     DeleteAction::make()->label('Hapus')->requiresConfirmation(),
+        // ])->defaultSort('nim');
     }
 
     public static function getPages(): array

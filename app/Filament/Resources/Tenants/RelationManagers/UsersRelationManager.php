@@ -27,7 +27,7 @@ class UsersRelationManager extends RelationManager
         return $table->recordTitleAttribute('name')->columns([
             TextColumn::make('name')->label('Nama')->searchable()->sortable(),
             TextColumn::make('email')->label('Surel')->searchable(),
-            TextColumn::make('pivot.is_active')->label('Status Membership')->formatStateUsing(fn ($state): string => $state ? 'Aktif' : 'Tidak Aktif')->badge(),
+            TextColumn::make('pivot.is_active')->label('Status Membership')->formatStateUsing(fn($state): string => $state ? 'Aktif' : 'Tidak Aktif')->badge(),
             TextColumn::make('pivot.joined_at')->label('Bergabung Pada')->dateTime('d M Y H:i'),
         ])->headerActions([
             AttachAction::make()->label('Tambahkan Pengguna')->preloadRecordSelect()->recordSelectSearchColumns(['name', 'email'])->form([

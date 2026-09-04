@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Courses;
 
+use App\Filament\Clusters\CurriculumCluster;
 use App\Filament\Resources\Courses\Pages\CreateCourse;
 use App\Filament\Resources\Courses\Pages\EditCourse;
 use App\Filament\Resources\Courses\Pages\ListCourses;
@@ -21,13 +22,15 @@ use UnitEnum;
 
 class CourseResource extends Resource
 {
+    protected static ?string $cluster = CurriculumCluster::class;
     protected static ?string $model = Course::class;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookOpen;
-    protected static string|UnitEnum|null $navigationGroup = 'Kurikulum & Mata Kuliah';
+    // protected static string|UnitEnum|null $navigationGroup = 'Kurikulum & Mata Kuliah';
     protected static ?string $navigationLabel = 'Mata Kuliah';
     protected static ?string $modelLabel = 'Mata Kuliah';
     protected static ?string $pluralModelLabel = 'Mata Kuliah';
     protected static ?string $recordTitleAttribute = 'Matakuliah';
+    protected static ?int $navigationSort = 3;
 
     public static function form(Schema $schema): Schema
     {

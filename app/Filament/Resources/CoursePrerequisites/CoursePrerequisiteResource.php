@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\CoursePrerequisites;
 
+use App\Filament\Clusters\CurriculumCluster;
 use App\Filament\Resources\CoursePrerequisites\Pages\CreateCoursePrerequisite;
 use App\Filament\Resources\CoursePrerequisites\Pages\EditCoursePrerequisite;
 use App\Filament\Resources\CoursePrerequisites\Pages\ListCoursePrerequisites;
@@ -21,19 +22,17 @@ use UnitEnum;
 
 class CoursePrerequisiteResource extends Resource
 {
+    protected static ?string $cluster = CurriculumCluster::class;
     protected static ?string $model = CoursePrerequisite::class;
-
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Kurikulum & Mata Kuliah';
+    // protected static string|UnitEnum|null $navigationGroup = 'Kurikulum & Mata Kuliah';
 
     protected static ?string $navigationLabel = 'Prasyarat Mata Kuliah';
-
     protected static ?string $modelLabel = 'Prasyarat Mata Kuliah';
-
     protected static ?string $pluralModelLabel = 'Prasyarat Mata Kuliah';
-
     protected static ?string $recordTitleAttribute = 'Prasyarat Matakuliah';
+    protected static ?int $navigationSort = 5;
 
     public static function getEloquentQuery(): Builder
     {

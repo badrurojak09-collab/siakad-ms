@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\CurriculumTemplates;
 
+use App\Filament\Clusters\CurriculumCluster;
 use App\Filament\Resources\CurriculumTemplates\Pages\CreateCurriculumTemplate;
 use App\Filament\Resources\CurriculumTemplates\Pages\EditCurriculumTemplate;
 use App\Filament\Resources\CurriculumTemplates\Pages\ListCurriculumTemplates;
@@ -21,14 +22,16 @@ use UnitEnum;
 
 class CurriculumTemplateResource extends Resource
 {
+    protected static ?string $cluster = CurriculumCluster::class;
     protected static ?string $slug = 'curriculum-templates';
     protected static ?string $model = CurriculumTemplate::class;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentDuplicate;
-    protected static string|UnitEnum|null $navigationGroup = 'Kurikulum & Mata Kuliah';
+    // protected static string|UnitEnum|null $navigationGroup = 'Kurikulum & Mata Kuliah';
     protected static ?string $navigationLabel = 'Template Kurikulum';
     protected static ?string $modelLabel = 'Template Kurikulum';
     protected static ?string $pluralModelLabel = 'Template Kurikulum';
     protected static ?string $recordTitleAttribute = 'Template Kurikulum';
+    protected static ?int $navigationSort = 2;
 
     public static function getEloquentQuery(): Builder
     {
