@@ -3,10 +3,11 @@
 namespace App\Filament\Resources\Tenants\RelationManagers;
 
 use App\Models\User;
+use Filament\Actions\{AttachAction, DetachAction, EditAction};
 use Filament\Forms\Components\{DateTimePicker, Toggle};
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
-use Filament\Tables\{Actions\AttachAction, Actions\DetachAction, Actions\EditAction, Columns\TextColumn, Table};
+use Filament\Tables\{Columns\TextColumn, Table};
 
 class UsersRelationManager extends RelationManager
 {

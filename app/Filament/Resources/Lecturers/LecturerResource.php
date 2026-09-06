@@ -5,6 +5,7 @@ use App\Filament\Resources\Lecturers\Pages;
 use App\Models\Lecturer;
 use Filament\Forms\Components\{DatePicker, Select, TextInput, Textarea};
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\{Columns\TextColumn, Filters\SelectFilter, Table};
@@ -24,12 +25,18 @@ class LecturerResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Select::make('user_id')->label('Akun Pengguna')->relationship('user', 'name')->searchable()->preload()->nullable(),
-            Select::make('study_program_id')->label('Program Studi')->relationship('studyProgram', 'name')->searchable()->preload()->nullable(),
-            TextInput::make('nidn')->label('NIDN')->required()->unique(ignoreRecord: true)->maxLength(30),
-            TextInput::make('academic_rank')->label('Jabatan Akademik')->maxLength(100),
-            DatePicker::make('join_date')->label('Tanggal Bergabung')->native(false),
-            Textarea::make('specialization')->label('Bidang Keahlian')->columnSpanFull(),
+            Section::make('Informasi Dosen')
+                ->description('Data identitas Dosen')
+                ->schema([
+                    Select::make('user_id')->label('Akun Pengguna')->relationship('user', 'name')->searchable()->preload()->nullable(),
+                    Select::make('study_program_id')->label('Program Studi')->relationship('studyProgram', 'name')->searchable()->preload()->nullable(),
+                    TextInput::make('nidn')->label('NIDN')->required()->unique(ignoreRecord: true)->maxLength(30),
+                    TextInput::make('academic_rank')->label('Jabatan Akademik')->maxLength(100),
+                    DatePicker::make('join_date')->label('Tanggal Bergabung')->native(false),
+                    Textarea::make('specialization')->label('Bidang Keahlian')->columnSpanFull(),
+                ])
+                ->columns(2)
+                ->columnSpanFull(),
         ]);
     }
 

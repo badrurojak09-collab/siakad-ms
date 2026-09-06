@@ -14,7 +14,11 @@ class Lecturer extends Model
 
     protected $table = 'lecturers';
     protected $guarded = [];
-    protected $casts = ['metadata' => 'array', 'join_date' => 'date'];
+
+    protected $casts = [
+        'metadata' => 'array',
+        'join_date' => 'date'
+    ];
 
     public function user(): BelongsTo
     {
