@@ -14,22 +14,21 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use App\Filament\Clusters\FacultyCluster;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use BackedEnum;
-use UnitEnum;
 
 class StudyProgramResource extends Resource
 {
+    protected static ?string $cluster = FacultyCluster::class;
     protected static ?string $model = StudyProgram::class;
     protected static ?string $slug = 'study-programs';
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
-    protected static string|UnitEnum|null $navigationGroup = 'Organisasi Akademik';
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
     protected static ?string $navigationLabel = 'Program Studi';
     protected static ?string $modelLabel = 'Program Studi';
     protected static ?string $pluralModelLabel = 'Program Studi';
     protected static ?string $recordTitleAttribute = 'Program Studi';
-
+    protected static ?int $navigationSort = 3;
     public static function form(Schema $schema): Schema
     {
         return StudyProgramForm::configure($schema);

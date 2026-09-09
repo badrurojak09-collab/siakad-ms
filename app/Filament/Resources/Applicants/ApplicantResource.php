@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filament\Resources\Applicants;
 
 use App\Filament\Resources\Applicants\Pages;
@@ -16,12 +17,15 @@ class ApplicantResource extends Resource
 {
     protected static ?string $slug = 'applicants';
     protected static ?string $model = Applicant::class;
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserPlus;
-    protected static string|UnitEnum|null $navigationGroup = 'Penerimaan Mahasiswa Baru';
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedUserPlus;
+    // protected static string|UnitEnum|null $navigationGroup = 'Penerimaan Mahasiswa Baru';
     protected static ?string $navigationLabel = 'Pendaftar PMB';
     protected static ?string $modelLabel = 'Pendaftar PMB';
     protected static ?string $pluralModelLabel = 'Pendaftar PMB';
-
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Keuangan & PMB';
+    }
     public static function form(Schema $schema): Schema
     {
         return $schema->components([Select::make('admission_period_id')->label('Periode PMB')->relationship('period', 'name')->searchable()->preload()->required(), TextInput::make('registration_number')->label('Nomor Pendaftaran')->required()->maxLength(80)->unique(ignoreRecord: true), TextInput::make('full_name')->label('Nama Lengkap')->required()->maxLength(150), TextInput::make('email')->label('Surel')->email()->required(), TextInput::make('phone')->label('Telepon')->maxLength(30), TextInput::make('identity_number')->label('Nomor Identitas')->maxLength(50), TextInput::make('school_origin')->label('Asal Sekolah')->maxLength(150), TextInput::make('selection_score')->label('Nilai Seleksi')->numeric()->minValue(0)->maxValue(100), Select::make('status')->label('Status')->options(['draft' => 'Draf', 'submitted' => 'Diajukan', 'under_review' => 'Ditinjau', 'selection_passed' => 'Lulus Seleksi', 'selection_failed' => 'Tidak Lulus', 'converted' => 'Dikonversi'])->default('draft')->required(), DateTimePicker::make('submitted_at')->label('Diajukan Pada')->native(false)]);

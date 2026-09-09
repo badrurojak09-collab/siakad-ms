@@ -22,16 +22,17 @@ use UnitEnum;
 
 class CourseResource extends Resource
 {
-    protected static ?string $cluster = CurriculumCluster::class;
     protected static ?string $model = Course::class;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookOpen;
-    // protected static string|UnitEnum|null $navigationGroup = 'Kurikulum & Mata Kuliah';
     protected static ?string $navigationLabel = 'Mata Kuliah';
     protected static ?string $modelLabel = 'Mata Kuliah';
     protected static ?string $pluralModelLabel = 'Mata Kuliah';
     protected static ?string $recordTitleAttribute = 'Matakuliah';
-    protected static ?int $navigationSort = 3;
-
+    protected static ?int $navigationSort = 2;
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Kurikulum & Pembelajaran';
+    }
     public static function form(Schema $schema): Schema
     {
         return CourseForm::configure($schema);

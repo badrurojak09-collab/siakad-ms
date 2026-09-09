@@ -1,8 +1,10 @@
 <?php
+
 namespace App\Filament\Resources\KrsLogs\Pages;
 
 use App\Filament\Resources\KrsLogs\KrsLogResource;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Actions\CreateAction;
 
 class ListKrsLogs extends ListRecords
 {

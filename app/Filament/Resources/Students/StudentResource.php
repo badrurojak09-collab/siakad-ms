@@ -23,11 +23,12 @@ class StudentResource extends Resource
     use ScopesOwnStudentRecords;
 
     protected static ?string $model = Student::class;
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
-    protected static string|UnitEnum|null $navigationGroup = 'Data Akademik';
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
+    // protected static string|UnitEnum|null $navigationGroup = 'Data Akademik';
     protected static ?string $navigationLabel = 'Mahasiswa';
     protected static ?string $modelLabel = 'Mahasiswa';
     protected static ?string $pluralModelLabel = 'Mahasiswa';
+    protected static ?int $navigationSort = 1;
 
     /**
      * EAGER LOADING
@@ -39,7 +40,10 @@ class StudentResource extends Resource
         return parent::getEloquentQuery()
             ->with(['user', 'studyProgram']);
     }
-
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Data Mahasiswa';
+    }
     public static function form(Schema $schema): Schema
     {
         // Mengambil ID Tenant Aktif melalui Service TenantContext

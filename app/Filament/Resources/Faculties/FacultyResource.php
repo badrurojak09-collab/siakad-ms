@@ -9,6 +9,7 @@ use App\Filament\Resources\Faculties\Pages\ViewFaculty;
 use App\Filament\Resources\Faculties\Schemas\FacultyForm;
 use App\Filament\Resources\Faculties\Schemas\FacultyInfolist;
 use App\Filament\Resources\Faculties\Tables\FacultiesTable;
+use App\Filament\Clusters\FacultyCluster;
 use App\Models\Faculty;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -16,20 +17,18 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use BackedEnum;
-use UnitEnum;
 
 class FacultyResource extends Resource
 {
+    protected static ?string $cluster = FacultyCluster::class;
     protected static ?string $slug = 'faculties';
     protected static ?string $model = Faculty::class;
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingOffice;
-    protected static string|UnitEnum|null $navigationGroup = 'Organisasi Akademik';
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingOffice;
     protected static ?string $navigationLabel = 'Fakultas';
     protected static ?string $modelLabel = 'Fakultas';
     protected static ?string $pluralModelLabel = 'Fakultas';
     protected static ?string $recordTitleAttribute = 'Fakultas';
-
+    protected static ?int $navigationSort = 1;
     public static function form(Schema $schema): Schema
     {
         return FacultyForm::configure($schema);

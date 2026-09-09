@@ -8,19 +8,19 @@ use Filament\Support\Icons\Heroicon;
 use BackedEnum;
 use UnitEnum;
 
-class CurriculumCluster extends Cluster
+class FacultyCluster extends Cluster
 {
     protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedSquares2x2;
-    protected static ?string $navigationLabel = 'Manajemen Kurikulum';
+    protected static ?string $navigationLabel = 'Fakultas';
     protected static ?int $navigationSort = 1;
     protected static ?SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
     public static function getNavigationGroup(): ?string
     {
-        return 'Kurikulum & Pembelajaran';
+        return 'Master Data';
     }
     public static function getClusterBreadcrumb(): string
     {
-        return __('Manajemen Kurikulum');
+        return __('Fakultas');
     }
 }

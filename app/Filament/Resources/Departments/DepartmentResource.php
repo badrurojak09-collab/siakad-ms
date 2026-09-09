@@ -14,21 +14,20 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use App\Filament\Clusters\FacultyCluster;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use BackedEnum;
-use UnitEnum;
 
 class DepartmentResource extends Resource
 {
+    protected static ?string $cluster = FacultyCluster::class;
     protected static ?string $slug = 'departments';
     protected static ?string $model = Department::class;
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingOffice2;
-    protected static string|UnitEnum|null $navigationGroup = 'Organisasi Akademik';
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingOffice2;
     protected static ?string $navigationLabel = 'Departemen';
     protected static ?string $modelLabel = 'Departemen';
     protected static ?string $pluralModelLabel = 'Departemen';
-
+    protected static ?int $navigationSort = 2;
     public static function form(Schema $schema): Schema
     {
         return DepartmentForm::configure($schema);

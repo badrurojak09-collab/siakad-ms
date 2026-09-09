@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filament\Resources\Lecturers;
 
 use App\Filament\Resources\Lecturers\Pages;
@@ -10,18 +11,20 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\{Columns\TextColumn, Filters\SelectFilter, Table};
 use Filament\{Actions\DeleteAction, Actions\EditAction};
-use BackedEnum;
-use UnitEnum;
+
 
 class LecturerResource extends Resource
 {
     protected static ?string $model = Lecturer::class;
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUser;
-    protected static string|UnitEnum|null $navigationGroup = 'Data Akademik';
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedUser;
+    // protected static string|UnitEnum|null $navigationGroup = 'Data Akademik';
     protected static ?string $navigationLabel = 'Dosen';
     protected static ?string $modelLabel = 'Dosen';
     protected static ?string $pluralModelLabel = 'Dosen';
-
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Master Data';
+    }
     public static function form(Schema $schema): Schema
     {
         return $schema->components([

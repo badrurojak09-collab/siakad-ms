@@ -21,6 +21,11 @@ class ActivityLogResource extends Resource
     protected static ?string $modelLabel = 'Log Aktivitas';
     protected static ?string $pluralModelLabel = 'Log Aktivitas';
 
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Laporan & Aktivitas';
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema->components([]);
