@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filament\Resources\AdmissionPeriods;
 
 use App\Filament\Resources\AdmissionPeriods\Pages;
@@ -17,7 +18,7 @@ class AdmissionPeriodResource extends Resource
     protected static ?string $slug = 'admission-periods';
     protected static ?string $model = AdmissionPeriod::class;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCalendarDays;
-    protected static string|UnitEnum|null $navigationGroup = 'Penerimaan Mahasiswa Baru';
+    protected static string|UnitEnum|null $navigationGroup = 'Penerimaan Mahasiswa';
     protected static ?string $navigationLabel = 'Periode PMB';
     protected static ?string $modelLabel = 'Periode PMB';
     protected static ?string $pluralModelLabel = 'Periode PMB';

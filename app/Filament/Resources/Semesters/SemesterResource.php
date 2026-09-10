@@ -23,7 +23,7 @@ class SemesterResource extends Resource
 {
     protected static ?string $model = Semester::class;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-    protected static string|UnitEnum|null $navigationGroup = 'Data Akademik';
+    protected static string|UnitEnum|null $navigationGroup = 'Akademik';
     protected static ?string $navigationLabel = 'Semester';
     protected static ?string $pluralModelLabel = 'Semester';
 

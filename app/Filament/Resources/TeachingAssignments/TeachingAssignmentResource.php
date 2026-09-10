@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filament\Resources\TeachingAssignments;
 
 use App\Filament\Resources\TeachingAssignments\Pages;
@@ -9,22 +10,27 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\{Columns\TextColumn, Table};
 use Filament\{Actions\DeleteAction, Actions\EditAction};
-use BackedEnum;
-use UnitEnum;
 
 class TeachingAssignmentResource extends Resource
 {
+    protected static ?string $cluster = \App\Filament\Clusters\CourseCluster::class;
     protected static ?string $slug = 'teaching-assignments';
     protected static ?string $model = TeachingAssignment::class;
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
-    protected static string|UnitEnum|null $navigationGroup = 'Penjadwalan & Ruang';
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
+    protected static ?int $navigationSort = 9;
     protected static ?string $navigationLabel = 'Dosen Pengampu';
     protected static ?string $modelLabel = 'Dosen Pengampu';
     protected static ?string $pluralModelLabel = 'Dosen Pengampu';
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([Select::make('course_class_id')->label('Kelas')->relationship('courseClass', 'class_code')->searchable()->preload()->required(), Select::make('lecturer_id')->label('Dosen')->relationship('lecturer', 'nidn')->searchable()->preload()->required(), Select::make('role')->label('Peran')->options(['primary' => 'Dosen Utama', 'co' => 'Co-Dosen'])->default('primary')->required(), TextInput::make('teaching_load')->label('Beban Mengajar')->numeric()->minValue(0)->default(1), Select::make('status')->label('Status')->options(['active' => 'Aktif', 'inactive' => 'Tidak Aktif'])->default('active')->required()]);
+        return $schema->components([
+            Select::make('course_class_id')->label('Kelas')->relationship('courseClass', 'class_code')->searchable()->preload()->required(),
+            Select::make('lecturer_id')->label('Dosen')->relationship('lecturer', 'nidn')->searchable()->preload()->required(),
+            Select::make('role')->label('Peran')->options(['primary' => 'Dosen Utama', 'co' => 'Co-Dosen'])->default('primary')->required(),
+            TextInput::make('teaching_load')->label('Beban Mengajar')->numeric()->minValue(0)->default(1),
+            Select::make('status')->label('Status')->options(['active' => 'Aktif', 'inactive' => 'Tidak Aktif'])->default('active')->required()
+        ]);
     }
 
     public static function table(Table $table): Table

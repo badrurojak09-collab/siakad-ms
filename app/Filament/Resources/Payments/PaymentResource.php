@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filament\Resources\Payments;
 
 use App\Filament\Resources\Payments\Pages;
@@ -9,22 +10,36 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\{Columns\TextColumn, Table};
 use Filament\{Actions\DeleteAction, Actions\EditAction};
-use BackedEnum;
-use UnitEnum;
+use Filament\Schemas\Components\Section;
 
 class PaymentResource extends Resource
 {
     protected static ?string $slug = 'payments';
     protected static ?string $model = Payment::class;
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCreditCard;
-    protected static string|UnitEnum|null $navigationGroup = 'Keuangan';
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedCreditCard;
+    protected static string|\UnitEnum|null $navigationGroup = 'Keuangan';
     protected static ?string $navigationLabel = 'Pembayaran SPP';
     protected static ?string $modelLabel = 'Pembayaran SPP';
     protected static ?string $pluralModelLabel = 'Pembayaran SPP';
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([Select::make('academic_bill_id')->label('Tagihan')->relationship('bill', 'bill_number')->searchable()->preload()->required(), Select::make('student_id')->label('Mahasiswa')->relationship('student', 'nim')->searchable()->preload()->required(), TextInput::make('payment_number')->label('Nomor Pembayaran')->required()->maxLength(80), TextInput::make('amount')->label('Nominal')->numeric()->minValue(0.01)->required(), Select::make('method')->label('Metode')->options(['cash' => 'Tunai', 'transfer' => 'Transfer', 'virtual_account' => 'Virtual Account', 'qris' => 'QRIS'])->required(), Select::make('status')->label('Status')->options(['pending' => 'Menunggu', 'confirmed' => 'Dikonfirmasi', 'failed' => 'Gagal', 'void' => 'Dibatalkan'])->default('confirmed')->required(), DateTimePicker::make('paid_at')->label('Dibayar Pada')->required(), TextInput::make('reference')->label('Referensi')->maxLength(150)]);
+        return $schema->components([
+            Section::make('Informasi Pembayaran SPP')
+                ->description('Data Pembayaran SPP Mahasiswa')
+                ->schema([
+                    Select::make('academic_bill_id')->label('Tagihan')->relationship('bill', 'bill_number')->searchable()->preload()->required(),
+                    Select::make('student_id')->label('Mahasiswa')->relationship('student', 'nim')->searchable()->preload()->required(),
+                    TextInput::make('payment_number')->label('Nomor Pembayaran')->required()->maxLength(80),
+                    TextInput::make('amount')->label('Nominal')->numeric()->minValue(0.01)->required(),
+                    Select::make('method')->label('Metode')->options(['cash' => 'Tunai', 'transfer' => 'Transfer', 'virtual_account' => 'Virtual Account', 'qris' => 'QRIS'])->required(),
+                    Select::make('status')->label('Status')->options(['pending' => 'Menunggu', 'confirmed' => 'Dikonfirmasi', 'failed' => 'Gagal', 'void' => 'Dibatalkan'])->default('confirmed')->required(),
+                    DateTimePicker::make('paid_at')->label('Dibayar Pada')->required(),
+                    TextInput::make('reference')->label('Referensi')->maxLength(150)
+                ])
+                ->columns(2)
+                ->columnSpanFull()
+        ]);
     }
 
     public static function table(Table $table): Table

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filament\Resources\Supervisions;
 
 use App\Models\Supervision;
@@ -10,15 +11,17 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use BackedEnum;
-use UnitEnum;
 
 class SupervisionResource extends Resource
 {
     protected static ?string $model = Supervision::class;
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-    protected static string|UnitEnum|null $navigationGroup = 'Tugas Akhir';
-    protected static ?string $navigationLabel = 'Tugas Akhir';
+    protected static ?string $cluster = \App\Filament\Clusters\ThesisCluster::class;
+    protected static ?int $navigationSort = 2;
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static ?string $navigationLabel = 'Dosen Pembimbing';
+    protected static ?string $modelLabel = 'Dosen Pembimbing';
+    protected static ?string $pluralModelLabel = 'Dosen Pembimbing';
+
 
     public static function form(Schema $schema): Schema
     {

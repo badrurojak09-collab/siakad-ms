@@ -4,24 +4,24 @@ namespace App\Filament\Resources\KrsDetails;
 
 use App\Filament\Resources\KrsDetails\Pages;
 use App\Models\KrsDetail;
+use App\Filament\Clusters\KrsCluster;
 use Filament\Forms\Components\Select;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\{Columns\TextColumn, Table};
 use Filament\{Actions\DeleteAction, Actions\EditAction};
-use BackedEnum;
-use UnitEnum;
 
 class KrsDetailResource extends Resource
 {
+    protected static ?string $cluster = KrsCluster::class;
     protected static ?string $slug = 'krs-details';
     protected static ?string $model = KrsDetail::class;
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedListBullet;
-    protected static string|UnitEnum|null $navigationGroup = 'KRS & Registrasi';
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedListBullet;
     protected static ?string $navigationLabel = 'Detail KRS';
     protected static ?string $modelLabel = 'Detail KRS';
     protected static ?string $pluralModelLabel = 'Detail KRS';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {

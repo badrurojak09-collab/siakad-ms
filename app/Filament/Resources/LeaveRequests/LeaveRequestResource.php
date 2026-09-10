@@ -5,6 +5,7 @@ namespace App\Filament\Resources\LeaveRequests;
 use App\Actions\Administration\ApproveLeaveRequestAction;
 use App\Filament\Resources\Concerns\ScopesOwnStudentRecords;
 use App\Models\LeaveRequest;
+use App\Filament\Clusters\StudentCluster;
 use Filament\Actions\Action;
 use Filament\Forms\Components\{DatePicker, Select, Textarea, TextInput};
 use Filament\Notifications\Notification;
@@ -15,18 +16,16 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\{Actions\DeleteAction, Actions\EditAction};
 use Illuminate\Support\Facades\Auth;
-use BackedEnum;
-use UnitEnum;
 
 class LeaveRequestResource extends Resource
 {
     use ScopesOwnStudentRecords;
-
+    protected static ?string $cluster = StudentCluster::class;
     protected static ?string $model = LeaveRequest::class;
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-    protected static string|UnitEnum|null $navigationGroup = 'Administrasi Mahasiswa';
-    protected static ?string $navigationLabel = 'Pengajuan Cuti';
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
+    protected static ?string $navigationLabel = 'Pengajuan Cuti';
+    protected static ?int $navigationSort = 3;
     public static function form(Schema $schema): Schema
     {
         return $schema->components([

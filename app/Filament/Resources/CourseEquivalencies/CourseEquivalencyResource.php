@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\CourseEquivalencies;
 
-use App\Filament\Clusters\CurriculumCluster;
+use App\Filament\Clusters\CourseCluster;
 use App\Filament\Resources\CourseEquivalencies\Pages\CreateCourseEquivalency;
 use App\Filament\Resources\CourseEquivalencies\Pages\EditCourseEquivalency;
 use App\Filament\Resources\CourseEquivalencies\Pages\ListCourseEquivalencies;
@@ -22,16 +22,15 @@ use UnitEnum;
 
 class CourseEquivalencyResource extends Resource
 {
-    protected static ?string $cluster = CurriculumCluster::class;
+    protected static ?string $cluster = CourseCluster::class;
     protected static ?string $slug = 'course-equivalencies';
     protected static ?string $model = CourseEquivalency::class;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedArrowsRightLeft;
-    // protected static string|UnitEnum|null $navigationGroup = 'Kurikulum & Mata Kuliah';
     protected static ?string $navigationLabel = 'Ekuivalensi Mata Kuliah';
     protected static ?string $modelLabel = 'Ekuivalensi Mata Kuliah';
     protected static ?string $pluralModelLabel = 'Ekuivalensi Mata Kuliah';
     protected static ?string $recordTitleAttribute = 'Ekuivalensi Matakuliah';
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 3;
 
     public static function getEloquentQuery(): Builder
     {

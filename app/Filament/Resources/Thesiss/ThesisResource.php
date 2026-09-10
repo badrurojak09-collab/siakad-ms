@@ -12,17 +12,19 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\{Actions\DeleteAction, Actions\EditAction};
-use BackedEnum;
-use UnitEnum;
+use App\Filament\Clusters\ThesisCluster;
 
 class ThesisResource extends Resource
 {
     use ScopesOwnStudentRecords;
-
+    protected static ?string $slug = 'thesiss';
+    protected static ?string $cluster = ThesisCluster::class;
     protected static ?string $model = Thesis::class;
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-    protected static string|UnitEnum|null $navigationGroup = 'Tugas Akhir';
-    protected static ?string $navigationLabel = 'Tugas Akhir';
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static ?int $navigationSort = 1;
+    protected static ?string $navigationLabel = 'Skripsi/Tugas Akhir';
+    protected static ?string $modelLabel = 'Skripsi/Tugas Akhir';
+    protected static ?string $pluralModelLabel = 'Skripsi/Tugas Akhir';
 
     public static function form(Schema $schema): Schema
     {

@@ -17,22 +17,19 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use BackedEnum;
-use UnitEnum;
+use App\Filament\Clusters\CourseCluster;
 
 class CourseResource extends Resource
 {
     protected static ?string $model = Course::class;
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookOpen;
+    protected static ?string $cluster = CourseCluster::class;
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedBookOpen;
     protected static ?string $navigationLabel = 'Mata Kuliah';
     protected static ?string $modelLabel = 'Mata Kuliah';
     protected static ?string $pluralModelLabel = 'Mata Kuliah';
     protected static ?string $recordTitleAttribute = 'Matakuliah';
-    protected static ?int $navigationSort = 2;
-    public static function getNavigationGroup(): ?string
-    {
-        return 'Kurikulum & Pembelajaran';
-    }
+    protected static ?int $navigationSort = 1;
+
     public static function form(Schema $schema): Schema
     {
         return CourseForm::configure($schema);

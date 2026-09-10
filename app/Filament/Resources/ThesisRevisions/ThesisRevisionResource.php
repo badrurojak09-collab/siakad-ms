@@ -8,8 +8,6 @@ use App\Filament\Resources\ThesisRevisions\Pages\ListThesisRevisions;
 use App\Filament\Resources\ThesisRevisions\Schemas\ThesisRevisionForm;
 use App\Filament\Resources\ThesisRevisions\Tables\ThesisRevisionsTable;
 use App\Models\ThesisRevision;
-use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -20,9 +18,12 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class ThesisRevisionResource extends Resource
 {
     protected static ?string $model = ThesisRevision::class;
-
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-    protected static string|UnitEnum|null $navigationGroup = 'Tugas Akhir';
+    protected static ?string $cluster = \App\Filament\Clusters\ThesisCluster::class;
+    protected static ?int $navigationSort = 4;
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static ?string $navigationLabel = 'Revisi Skripsi/Tugas Akhir';
+    protected static ?string $modelLabel = 'Revisi Skripsi/Tugas Akhir';
+    protected static ?string $pluralModelLabel = 'Revisi Skripsi/Tugas Akhir';
 
     public static function form(Schema $schema): Schema
     {

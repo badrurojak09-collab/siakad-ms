@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Filament\Resources\ThesisGrades;
 
 use App\Models\ThesisGrade;
+use App\Filament\Clusters\ThesisCluster;
 use Filament\Forms\Components\{TextInput, Textarea};
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -9,22 +11,25 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\{Actions\DeleteAction, Actions\EditAction};
-use BackedEnum;
-use UnitEnum;
 
 class ThesisGradeResource extends Resource
 {
+    protected static ?string $cluster = ThesisCluster::class;
     protected static ?string $model = ThesisGrade::class;
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-    protected static string|UnitEnum|null $navigationGroup = 'Tugas Akhir';
-    protected static ?string $navigationLabel = 'Tugas Akhir';
-
+    protected static ?int $navigationSort = 5;
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static ?string $navigationLabel = 'Nilai Skripsi/Tugas Akhir';
+    protected static ?string $modelLabel = 'Nilai Skripsi/Tugas Akhir';
+    protected static ?string $pluralModelLabel = 'Nilai Skripsi/Tugas Akhir';
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            TextInput::make('component')->label('Komponen')->maxLength(255),
-            TextInput::make('letter_grade')->label('Nilai Huruf')->maxLength(255),
-            Textarea::make('description')->columnSpanFull(),
+            TextInput::make('component')
+                ->label('Komponen')->maxLength(255),
+            TextInput::make('letter_grade')
+                ->label('Nilai Huruf')->maxLength(255),
+            Textarea::make('description')
+                ->columnSpanFull(),
         ]);
     }
 

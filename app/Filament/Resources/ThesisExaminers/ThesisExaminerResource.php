@@ -8,6 +8,7 @@ use App\Filament\Resources\ThesisExaminers\Pages\ListThesisExaminers;
 use App\Filament\Resources\ThesisExaminers\Schemas\ThesisExaminerForm;
 use App\Filament\Resources\ThesisExaminers\Tables\ThesisExaminersTable;
 use App\Models\ThesisExaminer;
+use App\Filament\Clusters\ThesisCluster;
 use BackedEnum;
 use UnitEnum;
 use Filament\Resources\Resource;
@@ -20,9 +21,12 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class ThesisExaminerResource extends Resource
 {
     protected static ?string $model = ThesisExaminer::class;
-
+    protected static ?string $cluster = ThesisCluster::class;
+    protected static ?int $navigationSort = 3;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-    protected static string|UnitEnum|null $navigationGroup = 'Tugas Akhir';
+    protected static ?string $navigationLabel = 'Dosen Penguji';
+    protected static ?string $modelLabel = 'Dosen Penguji';
+    protected static ?string $pluralModelLabel = 'Dosen Penguji';
 
     public static function form(Schema $schema): Schema
     {

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filament\Resources\CeremonyRegistrations;
 
 use App\Models\CeremonyRegistration;
@@ -9,15 +10,16 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\{Actions\DeleteAction, Actions\EditAction};
-use BackedEnum;
-use UnitEnum;
 
 class CeremonyRegistrationResource extends Resource
 {
+    protected static ?string $cluster = \App\Filament\Clusters\GraduationCluster::class;
     protected static ?string $model = CeremonyRegistration::class;
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-    protected static string|UnitEnum|null $navigationGroup = 'Kelulusan';
-    protected static ?string $navigationLabel = 'Kelulusan';
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static ?int $navigationSort = 6;
+    protected static ?string $navigationLabel = 'Pendaftaran Wisuda';
+    protected static ?string $modelLabel = 'Pendaftaran Wisuda';
+    protected static ?string $pluralModelLabel = 'Pendaftaran Wisuda';
 
     public static function form(Schema $schema): Schema
     {

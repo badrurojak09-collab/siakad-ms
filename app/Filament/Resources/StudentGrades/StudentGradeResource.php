@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filament\Resources\StudentGrades;
 
 use App\Filament\Resources\StudentGrades\Pages;
@@ -9,22 +10,35 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\{Columns\TextColumn, Table};
 use Filament\{Actions\DeleteAction, Actions\EditAction};
+use Filament\Schemas\Components\Section;
+use App\Filament\Clusters\AssessmentCluster;
 use BackedEnum;
 use UnitEnum;
 
 class StudentGradeResource extends Resource
 {
     protected static ?string $slug = 'student-grades';
+    protected static ?string $cluster = AssessmentCluster::class;
     protected static ?string $model = StudentGrade::class;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
-    protected static string|UnitEnum|null $navigationGroup = 'Penilaian';
     protected static ?string $navigationLabel = 'Nilai Mahasiswa';
     protected static ?string $modelLabel = 'Nilai Mahasiswa';
     protected static ?string $pluralModelLabel = 'Nilai Mahasiswa';
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([Select::make('course_class_id')->label('Kelas')->relationship('courseClass', 'class_code')->searchable()->preload()->required(), Select::make('student_id')->label('Mahasiswa')->relationship('student', 'nim')->searchable()->preload()->required(), Select::make('assessment_id')->label('Komponen')->relationship('assessment', 'name')->searchable()->preload()->required(), TextInput::make('score')->label('Nilai')->numeric()->minValue(0)->maxValue(100), TextInput::make('letter_grade')->label('Nilai Huruf')->maxLength(5), Select::make('graded_by')->label('Dinilai Oleh')->relationship('gradedBy', 'name')->searchable()->preload()->nullable()]);
+        return $schema->components([
+            Section::make('Informasi Nilai Mahasiswa')
+                ->description('Data Nilai Mahasiswa')
+                ->schema([
+                    Select::make('course_class_id')->label('Kelas')->relationship('courseClass', 'class_code')->searchable()->preload()->required(),
+                    Select::make('student_id')->label('Mahasiswa')->relationship('student', 'nim')->searchable()->preload()->required(),
+                    Select::make('assessment_id')->label('Komponen')->relationship('assessment', 'name')->searchable()->preload()->required(),
+                    TextInput::make('score')->label('Nilai')->numeric()->minValue(0)->maxValue(100),
+                    TextInput::make('letter_grade')->label('Nilai Huruf')->maxLength(5),
+                    Select::make('graded_by')->label('Dinilai Oleh')->relationship('gradedBy', 'name')->searchable()->preload()->nullable()
+                ])->columnSpanFull()->columns(2)
+        ]);
     }
 
     public static function table(Table $table): Table

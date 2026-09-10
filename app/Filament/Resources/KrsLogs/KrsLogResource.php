@@ -3,24 +3,24 @@
 namespace App\Filament\Resources\KrsLogs;
 
 use App\Models\KrsLog;
+use App\Filament\Clusters\KrsCluster;
 use App\Filament\Resources\KrsLogs\Pages;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use BackedEnum;
-use UnitEnum;
 
 class KrsLogResource extends Resource
 {
     protected static ?string $slug = 'krs-logs';
     protected static ?string $model = KrsLog::class;
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClock;
-    protected static string|UnitEnum|null $navigationGroup = 'KRS & Registrasi';
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedClock;
+    protected static ?string $cluster = KrsCluster::class;
     protected static ?string $navigationLabel = 'Riwayat KRS';
     protected static ?string $modelLabel = 'Riwayat KRS';
     protected static ?string $pluralModelLabel = 'Riwayat KRS';
+    protected static ?int $navigationSort = 3;
     public static function canCreate(): bool
     {
         return false;

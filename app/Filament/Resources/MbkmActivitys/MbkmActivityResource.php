@@ -12,30 +12,35 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\{Actions\DeleteAction, Actions\EditAction};
-use BackedEnum;
-use UnitEnum;
+use Filament\Schemas\Components\Section;
 
 class MbkmActivityResource extends Resource
 {
     use ScopesOwnStudentRecords;
 
     protected static ?string $model = MbkmActivity::class;
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-    protected static string|UnitEnum|null $navigationGroup = 'Administrasi Mahasiswa';
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|\UnitEnum|null $navigationGroup = 'Mahasiswa';
     protected static ?string $navigationLabel = 'Aktivitas MBKM';
 
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Select::make('student_id')->relationship('student', 'nim')->searchable()->preload()->required(),
-            Select::make('activity_type')->options(['internship' => 'Magang', 'exchange' => 'Pertukaran', 'research' => 'Riset', 'community' => 'Pengabdian', 'entrepreneurship' => 'Kewirausahaan'])->required(),
-            TextInput::make('institution_name')->required()->maxLength(255),
-            DatePicker::make('start_date')->required(),
-            DatePicker::make('end_date')->required()->afterOrEqual('start_date'),
-            TextInput::make('credits_recognized')->numeric()->minValue(0)->maxValue(60),
-            Select::make('recognition_course_id')->relationship('recognitionCourse', 'name')->searchable()->preload()->nullable(),
-            Select::make('supervisor_id')->relationship('supervisor', 'nidn')->searchable()->preload()->nullable(),
-            Select::make('status')->options(['pending' => 'Menunggu', 'approved' => 'Disetujui', 'rejected' => 'Ditolak', 'completed' => 'Selesai'])->disabled(),
+            Section::make('Informasi MBKM')
+                ->description('Data Aktifitas MBKM')
+                ->schema([
+                    Select::make('student_id')->relationship('student', 'nim')->searchable()->preload()->required(),
+                    Select::make('activity_type')->options(['internship' => 'Magang', 'exchange' => 'Pertukaran', 'research' => 'Riset', 'community' => 'Pengabdian', 'entrepreneurship' => 'Kewirausahaan'])->required(),
+                    TextInput::make('institution_name')->required()->maxLength(255),
+                    DatePicker::make('start_date')->required(),
+                    DatePicker::make('end_date')->required()->afterOrEqual('start_date'),
+                    TextInput::make('credits_recognized')->numeric()->minValue(0)->maxValue(60),
+                    Select::make('recognition_course_id')->relationship('recognitionCourse', 'name')->searchable()->preload()->nullable(),
+                    Select::make('supervisor_id')->relationship('supervisor', 'nidn')->searchable()->preload()->nullable(),
+                    Select::make('status')->options(['pending' => 'Menunggu', 'approved' => 'Disetujui', 'rejected' => 'Ditolak', 'completed' => 'Selesai'])->disabled()
+                ])
+                ->columns(2)
+                ->columnSpanFull(),
         ]);
     }
 

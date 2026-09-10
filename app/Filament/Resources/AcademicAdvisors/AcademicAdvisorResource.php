@@ -22,7 +22,7 @@ class AcademicAdvisorResource extends Resource
     protected static ?string $slug = 'academic-advisors';
     protected static ?string $model = AcademicAdvisor::class;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
-    protected static string|UnitEnum|null $navigationGroup = 'Data Akademik';
+    protected static string|UnitEnum|null $navigationGroup = 'Akademik';
     protected static ?string $navigationLabel = 'Pembimbing Akademik';
     protected static ?string $modelLabel = 'Pembimbing Akademik';
     protected static ?string $pluralModelLabel = 'Pembimbing Akademik';

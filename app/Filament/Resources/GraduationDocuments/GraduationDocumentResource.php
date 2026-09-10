@@ -8,8 +8,7 @@ use App\Filament\Resources\GraduationDocuments\Pages\ListGraduationDocuments;
 use App\Filament\Resources\GraduationDocuments\Schemas\GraduationDocumentForm;
 use App\Filament\Resources\GraduationDocuments\Tables\GraduationDocumentsTable;
 use App\Models\GraduationDocument;
-use BackedEnum;
-use UnitEnum;
+use App\Filament\Clusters\GraduationCluster;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -20,9 +19,12 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class GraduationDocumentResource extends Resource
 {
     protected static ?string $model = GraduationDocument::class;
-
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-    protected static string|UnitEnum|null $navigationGroup = 'Kelulusan';
+    protected static ?string $cluster = GraduationCluster::class;
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static ?int $navigationSort = 1;
+    protected static ?string $navigationLabel = 'Berkas Wisuda';
+    protected static ?string $modelLabel = 'Berkas Wisuda';
+    protected static ?string $pluralModelLabel = 'Berkas Wisuda';
 
     public static function form(Schema $schema): Schema
     {

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filament\Resources\AdmissionBills;
 
 use App\Filament\Resources\AdmissionBills\Pages;
@@ -9,22 +10,37 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\{Columns\TextColumn, Table};
 use Filament\{Actions\DeleteAction, Actions\EditAction};
-use BackedEnum;
-use UnitEnum;
+use Filament\Schemas\Components\Section;
 
 class AdmissionBillResource extends Resource
 {
     protected static ?string $slug = 'admission-bills';
     protected static ?string $model = AdmissionBill::class;
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentCurrencyDollar;
-    protected static string|UnitEnum|null $navigationGroup = 'Penerimaan Mahasiswa Baru';
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentCurrencyDollar;
+    protected static string|\UnitEnum|null $navigationGroup = 'Keuangan';
     protected static ?string $navigationLabel = 'Tagihan PMB';
     protected static ?string $modelLabel = 'Tagihan PMB';
     protected static ?string $pluralModelLabel = 'Tagihan PMB';
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([Select::make('applicant_id')->label('Pendaftar')->relationship('applicant', 'registration_number')->searchable()->preload()->required(), Select::make('fee_type_id')->label('Jenis Biaya')->relationship('feeType', 'name')->searchable()->preload(), TextInput::make('bill_number')->label('Nomor Tagihan')->required()->maxLength(80), TextInput::make('purpose')->label('Keperluan')->required()->maxLength(40), DatePicker::make('issued_at')->label('Diterbitkan Pada')->required(), DatePicker::make('due_date')->label('Jatuh Tempo')->required(), TextInput::make('amount')->label('Nominal')->numeric()->minValue(0)->required(), TextInput::make('paid_amount')->label('Terbayar')->numeric()->minValue(0)->default(0), Select::make('status')->label('Status')->options(['unpaid' => 'Belum Bayar', 'partial' => 'Sebagian', 'paid' => 'Lunas', 'overdue' => 'Jatuh Tempo'])->default('unpaid')->required()]);
+        return $schema->components([
+            Section::make('Informasi Tagihan PMB')
+                ->description('Data Rincian Tagihan Penerimaan Mahasiswa Baru')
+                ->schema([
+                    Select::make('applicant_id')->label('Pendaftar')->relationship('applicant', 'registration_number')->searchable()->preload()->required(),
+                    Select::make('fee_type_id')->label('Jenis Biaya')->relationship('feeType', 'name')->searchable()->preload(),
+                    TextInput::make('bill_number')->label('Nomor Tagihan')->required()->maxLength(80),
+                    TextInput::make('purpose')->label('Keperluan')->required()->maxLength(40),
+                    DatePicker::make('issued_at')->label('Diterbitkan Pada')->required(),
+                    DatePicker::make('due_date')->label('Jatuh Tempo')->required(),
+                    TextInput::make('amount')->label('Nominal')->numeric()->minValue(0)->required(),
+                    TextInput::make('paid_amount')->label('Terbayar')->numeric()->minValue(0)->default(0),
+                    Select::make('status')->label('Status')->options(['unpaid' => 'Belum Bayar', 'partial' => 'Sebagian', 'paid' => 'Lunas', 'overdue' => 'Jatuh Tempo'])->default('unpaid')->required()
+                ])
+                ->columns(2)
+                ->columnSpanFull()
+        ]);
     }
 
     public static function table(Table $table): Table

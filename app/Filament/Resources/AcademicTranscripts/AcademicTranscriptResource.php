@@ -15,36 +15,40 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-// use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
-use BackedEnum;
-use UnitEnum;
+use Filament\Schemas\Components\Section;
 
 class AcademicTranscriptResource extends Resource
 {
     use ScopesOwnStudentRecords;
 
     protected static ?string $model = AcademicTranscript::class;
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentText;
-    protected static string|UnitEnum|null $navigationGroup = 'Pelaporan Akademik';
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentText;
+    protected static string|\UnitEnum|null $navigationGroup = 'Pelaporan Akademik';
     protected static ?string $navigationLabel = 'KHS & Transkrip';
     protected static ?string $modelLabel = 'Transkrip Akademik';
 
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-            Select::make('student_id')->relationship('student', 'nim')->searchable()->preload()->required(),
-            Select::make('type')->options(['khs' => 'KHS', 'transcript' => 'Transkrip'])->required()->default('khs'),
-            Select::make('semester_id')->relationship('semester', 'id')->searchable()->preload()->nullable(),
-            TextInput::make('total_credits')->numeric()->disabled(),
-            TextInput::make('total_quality_points')->numeric()->disabled(),
-            TextInput::make('gpa')->numeric()->disabled(),
-            Select::make('status')->options(['draft' => 'Draf', 'generated' => 'Generated', 'final' => 'Final'])->disabled(),
-            TextInput::make('signature_hash')->disabled()->dehydrated(false),
-            TextInput::make('signer_name')->disabled()->dehydrated(false),
-            TextInput::make('signer_title')->disabled()->dehydrated(false),
+            Section::make('Informasi Transkrip Akademik')
+                ->description('Data Transkrip Akademik')
+                ->schema([
+                    Select::make('student_id')->relationship('student', 'nim')->searchable()->preload()->required(),
+                    Select::make('type')->options(['khs' => 'KHS', 'transcript' => 'Transkrip'])->required()->default('khs'),
+                    Select::make('semester_id')->relationship('semester', 'id')->searchable()->preload()->nullable(),
+                    TextInput::make('total_credits')->numeric()->disabled(),
+                    TextInput::make('total_quality_points')->numeric()->disabled(),
+                    TextInput::make('gpa')->numeric()->disabled(),
+                    Select::make('status')->options(['draft' => 'Draf', 'generated' => 'Generated', 'final' => 'Final'])->disabled(),
+                    TextInput::make('signature_hash')->disabled()->dehydrated(false),
+                    TextInput::make('signer_name')->disabled()->dehydrated(false),
+                    TextInput::make('signer_title')->disabled()->dehydrated(false),
+                ])
+                ->columns(2)
+                ->columnSpanFull()
         ]);
     }
 

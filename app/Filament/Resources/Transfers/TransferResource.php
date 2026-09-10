@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Transfers;
 use App\Actions\Administration\ProcessTransferAction;
 use App\Filament\Resources\Concerns\ScopesOwnStudentRecords;
 use App\Models\Transfer;
+use App\Filament\Clusters\StudentCluster;
 use Filament\Actions\Action;
 use Filament\Forms\Components\{DatePicker, Select};
 use Filament\Notifications\Notification;
@@ -23,9 +24,10 @@ class TransferResource extends Resource
     use ScopesOwnStudentRecords;
 
     protected static ?string $model = Transfer::class;
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedArrowsRightLeft;
-    protected static string|UnitEnum|null $navigationGroup = 'Administrasi Mahasiswa';
+    protected static ?string $cluster = StudentCluster::class;
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedArrowsRightLeft;
     protected static ?string $navigationLabel = 'Mutasi Mahasiswa';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {

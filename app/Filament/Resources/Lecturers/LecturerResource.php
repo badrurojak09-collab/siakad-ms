@@ -23,7 +23,7 @@ class LecturerResource extends Resource
     protected static ?string $pluralModelLabel = 'Dosen';
     public static function getNavigationGroup(): ?string
     {
-        return 'Master Data';
+        return 'Akademik';
     }
     public static function form(Schema $schema): Schema
     {

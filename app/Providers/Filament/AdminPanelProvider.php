@@ -20,6 +20,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Navigation\NavigationGroup;
+use Filament\Support\Enums\Width;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -30,20 +31,27 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->maxContentWidth(Width::Full)
             ->sidebarCollapsibleOnDesktop()
             ->navigationGroups([
-                NavigationGroup::make('Akademik & Operasional')
+                NavigationGroup::make('Akademik')
                     ->icon('heroicon-o-computer-desktop'),
-                NavigationGroup::make('Data Mahasiswa')
+                NavigationGroup::make('Perkuliahan')
+                    ->icon('heroicon-o-clipboard-document-list'),
+                NavigationGroup::make('Mahasiswa')
                     ->icon('heroicon-o-user-group'),
-                NavigationGroup::make('Keuangan & PMB')
-                    ->icon('heroicon-o-banknotes'),
-                NavigationGroup::make('Kurikulum & Pembelajaran')
+                NavigationGroup::make('Penilaian')
                     ->icon('heroicon-o-document-chart-bar'),
-                NavigationGroup::make('Master Data')
-                    ->icon('heroicon-o-cpu-chip'),
-                NavigationGroup::make('Laporan & Aktivitas')
-                    ->icon('heroicon-o-code-bracket-square'),
+                NavigationGroup::make('Tugas Akhir & Kelulusan')
+                    ->icon('heroicon-o-document-text'),
+                NavigationGroup::make('Keuangan')
+                    ->icon('heroicon-o-banknotes'),
+                NavigationGroup::make('Penerimaan Mahasiswa')
+                    ->icon('heroicon-o-stop-circle'),
+                NavigationGroup::make('Pelaporan Akademik')
+                    ->icon('heroicon-o-calendar-days'),
+                NavigationGroup::make('Administrasi Sistem')
+                    ->icon('heroicon-o-cog-8-tooth'),
             ])
             ->colors([
                 'primary' => Color::Indigo,

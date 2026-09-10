@@ -25,7 +25,7 @@ class AcademicYearResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Data Akademik';
+    protected static string|UnitEnum|null $navigationGroup = 'Akademik';
 
     protected static ?string $navigationLabel = 'Tahun Akademik';
 

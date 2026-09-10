@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filament\Resources\AttendanceRecords;
 
 use App\Filament\Resources\AttendanceRecords\Pages;
@@ -16,15 +17,22 @@ class AttendanceRecordResource extends Resource
 {
     protected static ?string $slug = 'attendance-records';
     protected static ?string $model = AttendanceRecord::class;
+    protected static ?string $cluster = \App\Filament\Clusters\AttendanceCluster::class;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCheckCircle;
-    protected static string|UnitEnum|null $navigationGroup = 'Presensi';
+    protected static ?int $navigationSort = 7;
     protected static ?string $navigationLabel = 'Rekaman Presensi';
     protected static ?string $modelLabel = 'Rekaman Presensi';
     protected static ?string $pluralModelLabel = 'Rekaman Presensi';
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([Select::make('attendance_session_id')->label('Sesi Presensi')->relationship('session', 'meeting_date')->searchable()->preload()->required(), Select::make('student_id')->label('Mahasiswa')->relationship('student', 'nim')->searchable()->preload()->required(), Select::make('status')->label('Status Kehadiran')->options(['present' => 'Hadir', 'late' => 'Terlambat', 'absent' => 'Tidak Hadir', 'excused' => 'Izin'])->default('present')->required(), DateTimePicker::make('check_in_at')->label('Waktu Check-in')->native(false), Textarea::make('notes')->label('Catatan')->columnSpanFull()]);
+        return $schema->components([
+            Select::make('attendance_session_id')->label('Sesi Presensi')->relationship('session', 'meeting_date')->searchable()->preload()->required(),
+            Select::make('student_id')->label('Mahasiswa')->relationship('student', 'nim')->searchable()->preload()->required(),
+            Select::make('status')->label('Status Kehadiran')->options(['present' => 'Hadir', 'late' => 'Terlambat', 'absent' => 'Tidak Hadir', 'excused' => 'Izin'])->default('present')->required(),
+            DateTimePicker::make('check_in_at')->label('Waktu Check-in')->native(false),
+            Textarea::make('notes')->label('Catatan')->columnSpanFull()
+        ]);
     }
 
     public static function table(Table $table): Table

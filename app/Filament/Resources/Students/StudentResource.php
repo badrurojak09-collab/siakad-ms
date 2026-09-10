@@ -6,6 +6,7 @@ use App\Filament\Resources\Concerns\ScopesOwnStudentRecords;
 use App\Filament\Resources\Students\Tables\StudentsTable;
 use App\Filament\Resources\Students\Pages;
 use App\Models\Student;
+use App\Filament\Clusters\StudentCluster;
 use App\Services\TenantContext;
 use Filament\Forms\Components\{DatePicker, Select, TextInput, Textarea};
 use Filament\Resources\Resource;
@@ -21,10 +22,9 @@ use UnitEnum;
 class StudentResource extends Resource
 {
     use ScopesOwnStudentRecords;
-
+    protected static ?string $cluster = StudentCluster::class;
     protected static ?string $model = Student::class;
     protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
-    // protected static string|UnitEnum|null $navigationGroup = 'Data Akademik';
     protected static ?string $navigationLabel = 'Mahasiswa';
     protected static ?string $modelLabel = 'Mahasiswa';
     protected static ?string $pluralModelLabel = 'Mahasiswa';
@@ -40,10 +40,7 @@ class StudentResource extends Resource
         return parent::getEloquentQuery()
             ->with(['user', 'studyProgram']);
     }
-    public static function getNavigationGroup(): ?string
-    {
-        return 'Data Mahasiswa';
-    }
+
     public static function form(Schema $schema): Schema
     {
         // Mengambil ID Tenant Aktif melalui Service TenantContext

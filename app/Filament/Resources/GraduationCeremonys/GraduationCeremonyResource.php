@@ -1,7 +1,9 @@
 <?php
+
 namespace App\Filament\Resources\GraduationCeremonys;
 
 use App\Models\GraduationCeremony;
+use App\Filament\Clusters\GraduationCluster;
 use Filament\Forms\Components\{TextInput, Textarea};
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -15,9 +17,11 @@ use UnitEnum;
 class GraduationCeremonyResource extends Resource
 {
     protected static ?string $model = GraduationCeremony::class;
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-    protected static string|UnitEnum|null $navigationGroup = 'Kelulusan';
-    protected static ?string $navigationLabel = 'Kelulusan';
+    protected static ?string $cluster = GraduationCluster::class;
+    protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static ?string $navigationLabel = 'Upacara Wisuda';
+    protected static ?string $modelLabel = 'Upacara Wisuda';
+    protected static ?string $pluralModelLabel = 'Upacara Wisuda';
 
     public static function form(Schema $schema): Schema
     {

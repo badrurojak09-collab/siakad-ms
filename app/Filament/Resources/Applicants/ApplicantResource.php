@@ -10,25 +10,50 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\{Columns\TextColumn, Table};
 use Filament\{Actions\DeleteAction, Actions\EditAction};
-use BackedEnum;
-use UnitEnum;
+use Filament\Schemas\Components\Section;
 
 class ApplicantResource extends Resource
 {
     protected static ?string $slug = 'applicants';
     protected static ?string $model = Applicant::class;
     protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedUserPlus;
-    // protected static string|UnitEnum|null $navigationGroup = 'Penerimaan Mahasiswa Baru';
     protected static ?string $navigationLabel = 'Pendaftar PMB';
     protected static ?string $modelLabel = 'Pendaftar PMB';
     protected static ?string $pluralModelLabel = 'Pendaftar PMB';
     public static function getNavigationGroup(): ?string
     {
-        return 'Keuangan & PMB';
+        return 'Penerimaan Mahasiswa';
     }
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([Select::make('admission_period_id')->label('Periode PMB')->relationship('period', 'name')->searchable()->preload()->required(), TextInput::make('registration_number')->label('Nomor Pendaftaran')->required()->maxLength(80)->unique(ignoreRecord: true), TextInput::make('full_name')->label('Nama Lengkap')->required()->maxLength(150), TextInput::make('email')->label('Surel')->email()->required(), TextInput::make('phone')->label('Telepon')->maxLength(30), TextInput::make('identity_number')->label('Nomor Identitas')->maxLength(50), TextInput::make('school_origin')->label('Asal Sekolah')->maxLength(150), TextInput::make('selection_score')->label('Nilai Seleksi')->numeric()->minValue(0)->maxValue(100), Select::make('status')->label('Status')->options(['draft' => 'Draf', 'submitted' => 'Diajukan', 'under_review' => 'Ditinjau', 'selection_passed' => 'Lulus Seleksi', 'selection_failed' => 'Tidak Lulus', 'converted' => 'Dikonversi'])->default('draft')->required(), DateTimePicker::make('submitted_at')->label('Diajukan Pada')->native(false)]);
+        return $schema->components([
+            Section::make('Informasi Pendaftaran')
+                ->description('Data identitas Pendaftar PMB')
+                ->schema([
+                    Select::make('admission_period_id')
+                        ->label('Periode PMB')->relationship('period', 'name')->searchable()->preload()->required(),
+                    TextInput::make('registration_number')
+                        ->label('Nomor Pendaftaran')->required()->maxLength(80)->unique(ignoreRecord: true),
+                    TextInput::make('full_name')
+                        ->label('Nama Lengkap')->required()->maxLength(150),
+                    TextInput::make('email')
+                        ->label('Surel')->email()->required(),
+                    TextInput::make('phone')
+                        ->label('Telepon')->maxLength(30),
+                    TextInput::make('identity_number')
+                        ->label('Nomor Identitas')->maxLength(50),
+                    TextInput::make('school_origin')
+                        ->label('Asal Sekolah')->maxLength(150),
+                    TextInput::make('selection_score')
+                        ->label('Nilai Seleksi')->numeric()->minValue(0)->maxValue(100),
+                    Select::make('status')
+                        ->label('Status')->options(['draft' => 'Draf', 'submitted' => 'Diajukan', 'under_review' => 'Ditinjau', 'selection_passed' => 'Lulus Seleksi', 'selection_failed' => 'Tidak Lulus', 'converted' => 'Dikonversi'])->default('draft')->required(),
+                    DateTimePicker::make('submitted_at')
+                        ->label('Diajukan Pada')->native(false)
+                ])
+                ->columnSpanFull()
+                ->columns(2)
+        ]);
     }
 
     public static function table(Table $table): Table

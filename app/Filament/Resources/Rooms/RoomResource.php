@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filament\Resources\Rooms;
 
 use App\Filament\Resources\Rooms\Pages;
@@ -17,10 +18,11 @@ class RoomResource extends Resource
     protected static ?string $slug = 'rooms';
     protected static ?string $model = Room::class;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingOffice;
-    protected static string|UnitEnum|null $navigationGroup = 'Penjadwalan & Ruang';
+    protected static string|UnitEnum|null $navigationGroup = 'Perkuliahan';
     protected static ?string $navigationLabel = 'Ruang';
     protected static ?string $modelLabel = 'Ruang';
     protected static ?string $pluralModelLabel = 'Ruang';
+    protected static ?int $navigationSort = 4;
 
     public static function form(Schema $schema): Schema
     {
