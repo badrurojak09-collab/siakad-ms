@@ -36,16 +36,32 @@ class AcademicTranscriptResource extends Resource
             Section::make('Informasi Transkrip Akademik')
                 ->description('Data Transkrip Akademik')
                 ->schema([
-                    Select::make('student_id')->relationship('student', 'nim')->searchable()->preload()->required(),
-                    Select::make('type')->options(['khs' => 'KHS', 'transcript' => 'Transkrip'])->required()->default('khs'),
-                    Select::make('semester_id')->relationship('semester', 'id')->searchable()->preload()->nullable(),
-                    TextInput::make('total_credits')->numeric()->disabled(),
-                    TextInput::make('total_quality_points')->numeric()->disabled(),
-                    TextInput::make('gpa')->numeric()->disabled(),
-                    Select::make('status')->options(['draft' => 'Draf', 'generated' => 'Generated', 'final' => 'Final'])->disabled(),
-                    TextInput::make('signature_hash')->disabled()->dehydrated(false),
-                    TextInput::make('signer_name')->disabled()->dehydrated(false),
-                    TextInput::make('signer_title')->disabled()->dehydrated(false),
+                    Select::make('student_id')
+                        ->relationship('student', 'nim')
+                        ->searchable()
+                        ->preload()
+                        ->required(),
+                    Select::make('type')
+                        ->options(['khs' => 'KHS', 'transcript' => 'Transkrip'])->required()->default('khs'),
+                    Select::make('semester_id')
+                        ->relationship('semester', 'semester_type')
+                        ->searchable()
+                        ->preload()
+                        ->nullable(),
+                    TextInput::make('total_credits')
+                        ->numeric()->disabled(),
+                    TextInput::make('total_quality_points')
+                        ->numeric()->disabled(),
+                    TextInput::make('gpa')
+                        ->numeric()->disabled(),
+                    Select::make('status')
+                        ->options(['draft' => 'Draf', 'generated' => 'Generated', 'final' => 'Final'])->disabled(),
+                    TextInput::make('signature_hash')
+                        ->disabled()->dehydrated(false),
+                    TextInput::make('signer_name')
+                        ->disabled()->dehydrated(false),
+                    TextInput::make('signer_title')
+                        ->disabled()->dehydrated(false),
                 ])
                 ->columns(2)
                 ->columnSpanFull()
@@ -55,10 +71,10 @@ class AcademicTranscriptResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->columns([
-            TextColumn::make('id')->sortable(),
-            TextColumn::make('student_id')->label('Mahasiswa')->sortable(),
+            TextColumn::make('id')->sortable()->hidden(),
+            TextColumn::make('student.user.name')->label('Mahasiswa')->sortable(),
             TextColumn::make('type')->badge(),
-            TextColumn::make('semester_id')->label('Semester'),
+            TextColumn::make('semester.semester_type')->label('Semester'),
             TextColumn::make('gpa')->label('IPK/IPS')->sortable(),
             TextColumn::make('status')->badge(),
             TextColumn::make('signature_hash')->label('Tanda Tangan')->formatStateUsing(fn(?string $state): string => $state ? 'Tersedia' : 'Belum')->badge(),

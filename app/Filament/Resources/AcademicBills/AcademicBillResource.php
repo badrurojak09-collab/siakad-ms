@@ -39,7 +39,7 @@ class AcademicBillResource extends Resource
                         ->required(),
                     Select::make('semester_id')
                         ->label('Semester')
-                        ->relationship('semester', 'id')
+                        ->relationship('semester', 'semester_type')
                         ->searchable()
                         ->preload()
                         ->required(),

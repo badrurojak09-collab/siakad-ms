@@ -43,7 +43,19 @@ class StudentGradeResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table->columns([TextColumn::make('courseClass.class_code')->label('Kelas'), TextColumn::make('student.nim')->label('NIM'), TextColumn::make('student.user.name')->label('Mahasiswa'), TextColumn::make('assessment.name')->label('Komponen'), TextColumn::make('score')->label('Nilai'), TextColumn::make('letter_grade')->label('Nilai Huruf')])->actions([EditAction::make()->label('Ubah'), DeleteAction::make()->label('Hapus')->requiresConfirmation()]);
+        return $table->columns([
+            TextColumn::make('courseClass.class_code')->label('Kelas'),
+            TextColumn::make('student.nim')->label('NIM'),
+            TextColumn::make('student.user.name')->label('Mahasiswa'),
+            TextColumn::make('assessment.name')->label('Komponen'),
+            TextColumn::make('score')->label('Nilai'),
+            TextColumn::make('letter_grade')->label('Nilai Huruf')
+        ])
+            ->actions([
+                EditAction::make()->label('Ubah'),
+                DeleteAction::make()->label('Hapus')
+                    ->requiresConfirmation()
+            ]);
     }
 
     public static function getPages(): array
